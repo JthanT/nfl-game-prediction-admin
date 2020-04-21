@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import TeamList from './screens/TeamList';
+import TeamList from './client/TeamList';
 
 function App() {
   return (
