@@ -13,7 +13,7 @@ function TeamList() {
         <MaterialTable 
             data={data}
             columns={[
-                name
+                data.name
             ]}
         />
     );
