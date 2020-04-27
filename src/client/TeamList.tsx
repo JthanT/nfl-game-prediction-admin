@@ -1,15 +1,21 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useQuery } from '@apollo/react-hooks';
+import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query'
+import MaterialTable from 'material-table';
 
 function TeamList() {
+    const { loading, error, data } = useQuery(TEAM_DETAILS_QUERY);
+
     const classes = useStyles();
 
     return (
-        <div className={classes.root}>
-            <div className={classes.center}>
-                Team
-            </div>
-        </div>
+        <MaterialTable 
+            data={data}
+            columns={[
+                name
+            ]}
+        />
     );
 }
 

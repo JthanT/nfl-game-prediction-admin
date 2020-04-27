@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 
-const TEAM_DETAILS_FRAGMENT = gql`
+export const TEAM_DETAILS_FRAGMENT = gql`
     fragment team_details on team_details {
         id
         name
@@ -12,4 +12,3 @@ const TEAM_DETAILS_FRAGMENT = gql`
         talent_factor
     }
 `
-export default TEAM_DETAILS_FRAGMENT;
