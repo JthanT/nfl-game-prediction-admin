@@ -9,6 +9,11 @@ import { split } from "apollo-link";
 import { getMainDefinition } from "apollo-utilities";
 import { InMemoryCache } from "apollo-cache-inmemory";
 
+interface Definition {
+  kind: string;
+  operation?: string;
+};
+
 function App() {
   const httpLink = new HttpLink({
     uri: "https://nfl-game-prediction.herokuapp.com/v1/graphql"
@@ -23,7 +28,7 @@ function App() {
 
   const link = split(
     ({ query }) => {
-      const { kind, operation } = getMainDefinition(query);
+      const { kind, operation }: Definition = getMainDefinition(query);
       return kind === "OperationDefinition" && operation === "subscription";
     },
     wsLink,

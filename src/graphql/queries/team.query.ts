@@ -4,7 +4,9 @@ import { TEAM_DETAILS_FRAGMENT } from '../fragments/team.fragments'
 
 export const TEAM_DETAILS_QUERY = gql`
     query TeamDetailsQuery {
-        ...team_details
+        team_details{
+            ...team_details
+        }
     }
     ${TEAM_DETAILS_FRAGMENT}
 `
