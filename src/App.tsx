@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import TeamList from './client/TeamList';
+import TeamDetails from './client/TeamDetails';
 import ApolloClient from "apollo-client";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { WebSocketLink } from "apollo-link-ws";
@@ -46,6 +47,7 @@ function App() {
         <div>
           <Switch>
             <Route exact path='/' component={TeamList} />
+            <Route path='/details' component={TeamDetails} />
           </Switch>
         </div>
       </Router>
