@@ -1,34 +1,19 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { useLocation } from "react-router-dom";
+import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import MuiDialogContent from '@material-ui/core/DialogContent';
 
-function TeamDetails() {
-
-    const classes = useStyles();
-    const location = useLocation();
+function TeamDetails(props: {teamName: string}) {
 
     return (
-        <div className={classes.center}>
-            {location.state}
+        <div>
+            <MuiDialogTitle>
+                { props.teamName }
+            </MuiDialogTitle>
+            <MuiDialogContent dividers>
+               hi
+            </MuiDialogContent>
         </div>
     );
 }
 
 export default TeamDetails;
-
-const useStyles = makeStyles({
-    root: {
-        backgroundColor: 'black',
-        height: '100vh'
-    },
-    center: {
-        backgroundColor: 'white',
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)'
-    },
-    cell: {
-        width: '100%',
-    }
-});
