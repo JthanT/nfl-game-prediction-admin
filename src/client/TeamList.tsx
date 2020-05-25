@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import TeamDetails from './TeamDetails';
 import { useQuery } from '@apollo/react-hooks';
-import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
+import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
+import TeamDetails from './TeamDetails';
+import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
 
 function TeamList() {
     const { data } = useQuery(TEAM_DETAILS_QUERY);
