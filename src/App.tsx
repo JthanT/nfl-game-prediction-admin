@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import AdminGameList from './admin-client/AdminGameList';
-import AdminGameDetails from './admin-client/AdminGameDetails';
+import AdminTeamList from './admin-client/AdminTeamList';
+import AdminTeamDetails from './admin-client/AdminTeamDetails';
 import TeamList from './client/TeamList';
 import TeamDetails from './client/TeamDetails';
 import GameList from './client/GameList';
@@ -54,8 +54,8 @@ function App() {
             <Route path='/details' component={TeamDetails} />
             <Route path='/game-list' component={GameList} />
             <Route path='/game-details' component={GameDetails} />
-            <Route path='/admin-game-list' component={AdminGameList} />
-            <Route path='/admin-game-details' component={AdminGameDetails} />
+            <Route path='/admin-team-list' component={AdminTeamList} />
+            <Route path='/admin-team-details' component={AdminTeamDetails} />
           </Switch>
         </div>
       </Router>
