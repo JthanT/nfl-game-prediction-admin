@@ -1,9 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminGameList from './admin-client/AdminGameList';
+import AdminGameDetails from './admin-client/AdminGameDetails';
 import TeamList from './client/TeamList';
 import TeamDetails from './client/TeamDetails';
 import GameList from './client/GameList';
+import GameDetails from './client/GameDetails';
 import ApolloClient from "apollo-client";
 import { ApolloProvider } from "@apollo/react-hooks";
 import { WebSocketLink } from "apollo-link-ws";
@@ -51,7 +53,9 @@ function App() {
             <Route exact path='/' component={TeamList} />
             <Route path='/details' component={TeamDetails} />
             <Route path='/game-list' component={GameList} />
+            <Route path='/game-details' component={GameDetails} />
             <Route path='/admin-game-list' component={AdminGameList} />
+            <Route path='/admin-game-details' component={AdminGameDetails} />
           </Switch>
         </div>
       </Router>

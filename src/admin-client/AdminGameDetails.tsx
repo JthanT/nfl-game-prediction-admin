@@ -5,7 +5,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { GAME_SCHEDULE_BY_ID_QUERY } from '../graphql/queries/game.query';
 
-function GameDetails(props: {gameId: number}) {
+function AdminGameDetails(props: {gameId: number}) {
     const { data } = useQuery(
         GAME_SCHEDULE_BY_ID_QUERY,
         {
@@ -29,4 +29,4 @@ function GameDetails(props: {gameId: number}) {
     );
 }
 
-export default GameDetails;
+export default AdminGameDetails;
