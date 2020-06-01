@@ -25,7 +25,7 @@ function AdminTeamList() {
 
     return (
         <div className={classes.root}>
-            <Dialog onClose={handleClose} open={open}>
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'md'}>
                 <AdminTeamDetails teamName={name} />
             </Dialog>
             <MUIDataTable
