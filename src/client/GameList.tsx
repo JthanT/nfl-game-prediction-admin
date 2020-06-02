@@ -3,19 +3,19 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
-import TeamDetails from './TeamDetails';
-import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
+import GameDetails from './GameDetails';
+import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.query';
 
-function TeamList() {
-    const { data } = useQuery(TEAM_DETAILS_QUERY);
+function GameList() {
+    const { data } = useQuery(GAME_SCHEDULE_QUERY);
 
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState('');
+    const [id, setId] = useState<number>(0);
 
-    const handleOpen = (teamName: string) => {
-        setName(teamName);
+    const handleOpen = (gameId: string) => {
+        setId(parseInt(gameId));
         setOpen(true);
     };
 
@@ -26,29 +26,36 @@ function TeamList() {
     return (
         <div className={classes.root}>
             <Dialog onClose={handleClose} open={open}>
-                <TeamDetails teamName={name} />
+                <GameDetails gameId={id} />
             </Dialog>
             <MUIDataTable
-                data={data ? data.team_details : []}
+                data={data ? data.game_schedule : []}
                 columns={[
                     {
-                        label: 'Team',
-                        name: 'name',
+                        label: ' ',
+                        name: 'game_id',
+                        options: {
+                            display: "excluded",
+                        },
                     },
                     {
-                        label: 'Offence Rank',
-                        name: 'offence_ranking',
+                        label: ' ',
+                        name: 'team_1_name',
                     },
                     {
-                        label: 'Defence Rank',
-                        name: 'defence_ranking',
+                        label: ' ',
+                        name: 'team_2_name',
                     },
                     {
-                        label: 'Special Teams Rank',
-                        name: 'special_teams_ranking',
+                        label: 'Date',
+                        name: 'date',
+                    },
+                    {
+                        label: 'Time',
+                        name: 'time',
                     },
                 ]}
-                title="Select a Team"
+                title="Schedule"
                 options={{
                     print: false,
                     download: false,
@@ -63,7 +70,7 @@ function TeamList() {
     );
 }
 
-export default TeamList;
+export default GameList;
 
 const useStyles = makeStyles({
     root: {

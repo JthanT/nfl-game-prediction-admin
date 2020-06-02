@@ -3,10 +3,10 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
-import TeamDetails from './TeamDetails';
+import AdminTeamDetails from '../admin-client/AdminTeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
 
-function TeamList() {
+function AdminTeamList() {
     const { data } = useQuery(TEAM_DETAILS_QUERY);
 
     const classes = useStyles();
@@ -25,8 +25,8 @@ function TeamList() {
 
     return (
         <div className={classes.root}>
-            <Dialog onClose={handleClose} open={open}>
-                <TeamDetails teamName={name} />
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'md'}>
+                <AdminTeamDetails teamName={name} />
             </Dialog>
             <MUIDataTable
                 data={data ? data.team_details : []}
@@ -63,7 +63,7 @@ function TeamList() {
     );
 }
 
-export default TeamList;
+export default AdminTeamList;
 
 const useStyles = makeStyles({
     root: {

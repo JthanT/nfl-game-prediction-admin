@@ -2,7 +2,7 @@ import gql from 'graphql-tag'
 
 export const TEAM_DETAILS_FRAGMENT = gql`
     fragment team_details on team_details {
-        id
+        team_id
         name
         offence_ranking
         defence_ranking
@@ -10,5 +10,6 @@ export const TEAM_DETAILS_FRAGMENT = gql`
         coaching_factor
         injury_severity
         talent_factor
+        grade
     }
 `
