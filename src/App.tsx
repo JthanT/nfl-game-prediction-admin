@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import AdminTeamList from './admin-client/AdminTeamList';
 import AdminTeamDetails from './admin-client/AdminTeamDetails';
+import AdminGameList from './admin-client/AdminGameList';
 import TeamList from './client/TeamList';
 import TeamDetails from './client/TeamDetails';
 import GameList from './client/GameList';
@@ -56,6 +57,7 @@ function App() {
             <Route path='/game-details' component={GameDetails} />
             <Route path='/admin-team-list' component={AdminTeamList} />
             <Route path='/admin-team-details' component={AdminTeamDetails} />
+            <Route path='/admin-game-list' component={AdminGameList} />
           </Switch>
         </div>
       </Router>

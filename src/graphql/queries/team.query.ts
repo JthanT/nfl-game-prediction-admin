@@ -23,12 +23,12 @@ export const TEAM_DETAILS_BY_NAME_QUERY = gql`
 export const TEAM_DETAILS_UPDATE_BY_ID = gql`
     mutation TeamDetailsUpdateById(
         $id: Int!, 
-        $coaching_factor: smallint, 
-        $defence_ranking: smallint,
-        $injury_severity: smallint, 
-        $offence_ranking: smallint, 
-        $special_teams_ranking: smallint, 
-        $talent_factor: smallint
+        $coaching_factor: Int, 
+        $defence_ranking: Int,
+        $injury_severity: Int, 
+        $offence_ranking: Int, 
+        $special_teams_ranking: Int, 
+        $talent_factor: Int
     ) {
         update_team_details(
             where: {team_id: {_eq: $id}}, 
