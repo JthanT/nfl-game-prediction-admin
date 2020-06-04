@@ -3,14 +3,14 @@ import { useQuery } from '@apollo/react-hooks';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { TEAM_DETAILS_BY_NAME_QUERY } from '../graphql/queries/team.query';
+import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.query';
 
-function TeamDetails(props: {teamName: string}) {
+function TeamDetails(props: {teamId: number}) {
     const { data } = useQuery(
-        TEAM_DETAILS_BY_NAME_QUERY,
+        TEAM_DETAILS_BY_ID_QUERY,
         {
             variables: {
-                name: props.teamName
+                id: props.teamId
             },
         }
     );
