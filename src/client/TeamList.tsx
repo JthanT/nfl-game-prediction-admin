@@ -7,15 +7,14 @@ import TeamDetails from './TeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
 
 function TeamList() {
-    const { data } = useQuery(TEAM_DETAILS_QUERY);
-
-    const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState('');
+    const [id, setId] = useState<number>(0);
+    
+    const { data } = useQuery(TEAM_DETAILS_QUERY);
 
-    const handleOpen = (teamName: string) => {
-        setName(teamName);
+    const handleOpen = (id: number) => {
+        setId(id);
         setOpen(true);
     };
 
@@ -23,14 +22,23 @@ function TeamList() {
         setOpen(false);
     };
 
+    const classes = useStyles();
+
     return (
-        <div className={classes.root}>
+        <div>
             <Dialog onClose={handleClose} open={open}>
-                <TeamDetails teamName={name} />
+                <TeamDetails teamId={id} />
             </Dialog>
             <MUIDataTable
                 data={data ? data.team_details : []}
                 columns={[
+                    {
+                        label: ' ',
+                        name: 'team_id',
+                        options: {
+                            display: "excluded",
+                        },
+                    },
                     {
                         label: 'Team',
                         name: 'name',
@@ -48,15 +56,16 @@ function TeamList() {
                         name: 'special_teams_ranking',
                     },
                 ]}
-                title="Select a Team"
+                title=""
                 options={{
                     print: false,
                     download: false,
                     viewColumns: false,
-                    serverSide: true,
                     selectableRows: 'none',
                     filter: false,
-                    onRowClick: (rowName) => handleOpen(rowName[0]),
+                    rowsPerPage: 16,
+                    rowsPerPageOptions: [],
+                    onRowClick: (rowName) => handleOpen(parseInt(rowName[0])),
                 }}
             />
         </div>
@@ -66,9 +75,8 @@ function TeamList() {
 export default TeamList;
 
 const useStyles = makeStyles({
-    root: {
+    table: {
         backgroundColor: 'black',
-        height: '100vh'
     },
     center: {
         backgroundColor: 'white',

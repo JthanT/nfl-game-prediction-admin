@@ -4,10 +4,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { TEAM_DETAILS_BY_NAME_QUERY } from '../graphql/queries/team.query';
+import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.query';
 import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/queries/team.query';
 
-function AdminTeamDetails(props: {teamName: string}) {
+function AdminTeamDetails(props: {teamId: number}) {
 
     const [offenceRank, setOffenceRank] = useState<number>();
     const [defenceRank, setDefenceRank] = useState<number>();
@@ -19,10 +19,10 @@ function AdminTeamDetails(props: {teamName: string}) {
     const [updateTeamDetails] = useMutation(TEAM_DETAILS_UPDATE_BY_ID);
     
     const { data } = useQuery(
-        TEAM_DETAILS_BY_NAME_QUERY,
+        TEAM_DETAILS_BY_ID_QUERY,
         {
             variables: {
-                name: props.teamName
+                id: props.teamId
             },
         }
     );

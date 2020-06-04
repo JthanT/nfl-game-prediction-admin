@@ -76,9 +76,10 @@ function AdminGameList() {
                     print: false,
                     download: false,
                     viewColumns: false,
-                    serverSide: true,
                     selectableRows: 'none',
                     filter: false,
+                    rowsPerPage: 16,
+                    rowsPerPageOptions: [],
                     onRowClick: (rowName) => handleOpenDetails(rowName[0]),
                 }}
             />

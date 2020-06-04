@@ -12,10 +12,10 @@ function AdminTeamList() {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [name, setName] = useState('');
+    const [id, setId] = useState<number>(0);
 
-    const handleOpen = (teamName: string) => {
-        setName(teamName);
+    const handleOpen = (id: number) => {
+        setId(id);
         setOpen(true);
     };
 
@@ -26,7 +26,7 @@ function AdminTeamList() {
     return (
         <div className={classes.root}>
             <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'md'}>
-                <AdminTeamDetails teamName={name} />
+                <AdminTeamDetails teamId={id} />
             </Dialog>
             <MUIDataTable
                 data={data ? data.team_details : []}
@@ -48,15 +48,16 @@ function AdminTeamList() {
                         name: 'special_teams_ranking',
                     },
                 ]}
-                title="Select a Team"
+                title=""
                 options={{
                     print: false,
                     download: false,
                     viewColumns: false,
-                    serverSide: true,
                     selectableRows: 'none',
                     filter: false,
-                    onRowClick: (rowName) => handleOpen(rowName[0]),
+                    rowsPerPage: 16,
+                    rowsPerPageOptions: [],
+                    onRowClick: (rowData) => handleOpen(parseInt(rowData[0])),
                 }}
             />
         </div>

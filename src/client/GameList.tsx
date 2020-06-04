@@ -39,11 +39,11 @@ function GameList() {
                         },
                     },
                     {
-                        label: ' ',
+                        label: 'Away Team',
                         name: 'team_1_name',
                     },
                     {
-                        label: ' ',
+                        label: 'Home Team',
                         name: 'team_2_name',
                     },
                     {
@@ -55,14 +55,15 @@ function GameList() {
                         name: 'time',
                     },
                 ]}
-                title="Schedule"
+                title=""
                 options={{
                     print: false,
                     download: false,
                     viewColumns: false,
-                    serverSide: true,
                     selectableRows: 'none',
                     filter: false,
+                    rowsPerPage: 16,
+                    rowsPerPageOptions: [],
                     onRowClick: (rowName) => handleOpen(rowName[0]),
                 }}
             />
