@@ -1,6 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import AdminTeamList from './admin-client/AdminTeamList';
 import AdminGameList from './admin-client/AdminGameList';
 import TeamList from './client/TeamList';
@@ -77,6 +77,7 @@ function App() {
               <Route path='/game-details' component={GameDetails} />
               <Route path='/admin-team-list' component={AdminTeamList} />
               <Route path='/admin-game-list' component={AdminGameList} />
+              <Route render={() => <Redirect to={{pathname: "/"}} />} />
             </Switch>
         </Router>
     </div>

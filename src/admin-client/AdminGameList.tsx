@@ -1,23 +1,23 @@
 import React, { useState } from 'react';
-import { useQuery, useMutation } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import AdminGameInsert from '../admin-client/AdminGameInsert';
-import AdminGameDetails from '../admin-client/AdminGameDetails';
+import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
 import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.query';
 
 function AdminGameList() {
 
     const [openDetails, setOpenDetails] = useState(false);
-    const [id, setId] = useState<number>(0);
     const [openGameInsert, setOpenGameInsert] = useState(false);
+    const [id, setId] = useState<number>(0);
     
-    const { data } = useQuery(GAME_SCHEDULE_QUERY);
+    const { data, refetch } = useQuery(GAME_SCHEDULE_QUERY);
 
-    const handleOpenDetails = (gameId: string) => {
-        setId(parseInt(gameId));
+    const handleOpenDetails = (gameId: number) => {
+        setId(gameId);
         setOpenDetails(true);
     };
 
@@ -38,12 +38,12 @@ function AdminGameList() {
     return (
         <div>
             <Dialog onClose={handleCloseDetails} open={openDetails}>
-                <AdminGameDetails gameId={id} />
+                <AdminModifyGameDetails gameId={id} refetchGameDetails={refetch} />
             </Dialog>
             <Dialog onClose={handleCloseGameInsert} open={openGameInsert}>
-                <AdminGameInsert/>
+                <AdminGameInsert refetchGames={refetch} />
             </Dialog>
-            <Button variant="outlined" onClick={handleOpenGameInsert}>Add Game</Button>
+            
             <MUIDataTable
                 data={data ? data.game_schedule : []}
                 columns={[
@@ -63,6 +63,10 @@ function AdminGameList() {
                         name: 'team_2_name',
                     },
                     {
+                        label: 'Predicted Winner',
+                        name: 'predicted_winner',
+                    },
+                    {
                         label: 'Date',
                         name: 'date',
                     },
@@ -71,7 +75,7 @@ function AdminGameList() {
                         name: 'time',
                     },
                 ]}
-                title=""
+                title={<Button variant="outlined" onClick={handleOpenGameInsert}>Add Game</Button>}
                 options={{
                     print: false,
                     download: false,
@@ -80,7 +84,7 @@ function AdminGameList() {
                     filter: false,
                     rowsPerPage: 16,
                     rowsPerPageOptions: [],
-                    onRowClick: (rowName) => handleOpenDetails(rowName[0]),
+                    onRowClick: (rowName) => handleOpenDetails(parseInt(rowName[0])),
                 }}
             />
         </div>

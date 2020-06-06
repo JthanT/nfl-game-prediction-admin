@@ -4,7 +4,7 @@ import { GAME_SCHEDULE_FRAGMENT } from '../fragments/game.fragments'
 
 export const GAME_SCHEDULE_QUERY = gql`
     query GameScheduleQuery {
-        game_schedule{
+        game_schedule(order_by: {date: asc}){
             ...game_schedule
         }
     }
