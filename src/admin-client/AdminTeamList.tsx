@@ -32,6 +32,13 @@ function AdminTeamList() {
                 data={data ? data.team_details : []}
                 columns={[
                     {
+                        label: ' ',
+                        name: 'team_id',
+                        options: {
+                            display: "excluded",
+                        },
+                    },
+                    {
                         label: 'Team',
                         name: 'name',
                     },

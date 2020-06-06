@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { GAME_SCHEDULE_INSERT } from '../graphql/queries/game.query';
 
-function AdminGameInsert() {
+function AdminGameInsert(props: {refetchGames?: () => void}) {
 
     const [awayTeam, setAwayTeam] = useState<string>();
     const [homeTeam, setHomeTeam] = useState<string>();
@@ -30,6 +30,10 @@ function AdminGameInsert() {
                 }
             }
         )
+
+        if (props.refetchGames) {
+            props.refetchGames()
+        };
     };
 
     return (

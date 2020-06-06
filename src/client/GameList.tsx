@@ -47,6 +47,10 @@ function GameList() {
                         name: 'team_2_name',
                     },
                     {
+                        label: 'Predicted Winner',
+                        name: 'predicted_winner',
+                    },
+                    {
                         label: 'Date',
                         name: 'date',
                     },
