@@ -3,8 +3,12 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import GameDetails from './GameDetails';
 import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.query';
+
 
 function GameList() {
     const { data } = useQuery(GAME_SCHEDULE_QUERY);
@@ -25,7 +29,12 @@ function GameList() {
 
     return (
         <div className={classes.root}>
-            <Dialog onClose={handleClose} open={open}>
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth={'md'}>
+                <DialogActions>
+                    <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
+                        <CloseIcon/>
+                    </IconButton>
+                </DialogActions>
                 <GameDetails gameId={id} />
             </Dialog>
             <MUIDataTable
@@ -55,7 +64,7 @@ function GameList() {
                         name: 'date',
                     },
                     {
-                        label: 'Time',
+                        label: 'Time (CST)',
                         name: 'time',
                     },
                 ]}
@@ -81,6 +90,13 @@ const useStyles = makeStyles({
     root: {
         backgroundColor: 'black',
         height: '100vh'
+    },
+    closeDialogButton: {
+        position: 'absolute',
+        left: '95%',
+        top: '2%',
+        backgroundColor: 'lightgray',
+        color: 'gray',
     },
     center: {
         backgroundColor: 'white',

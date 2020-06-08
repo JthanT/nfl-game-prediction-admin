@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.query';
 import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/queries/team.query';
 
-function AdminTeamDetails(props: {teamId: number}) {
+function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
 
     const [offenceRank, setOffenceRank] = useState<number>();
     const [defenceRank, setDefenceRank] = useState<number>();
@@ -51,10 +52,18 @@ function AdminTeamDetails(props: {teamId: number}) {
                 }
             }
         )
+
+        if (props.refetchTeamDetails) {
+            props.refetchTeamDetails()
+        };
     };
 
     return (
         <div>
+            <DialogTitle>
+                Edit Team Data: {data?.team_details[0].name}
+            </DialogTitle>
+
             <DialogContent>
                 <Typography>
                     Offence Rank
@@ -63,7 +72,9 @@ function AdminTeamDetails(props: {teamId: number}) {
                     value={offenceRank ?? data?.team_details[0].offence_ranking}
                     onChange={(fieldValue) => setOffenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent>
                 <Typography>
                     Defence Rank
                 </Typography>
@@ -71,7 +82,9 @@ function AdminTeamDetails(props: {teamId: number}) {
                     value={defenceRank ?? data?.team_details[0].defence_ranking}
                     onChange={(fieldValue) => setDefenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent>
                 <Typography>
                     Special Teams Rank
                 </Typography>
@@ -79,7 +92,9 @@ function AdminTeamDetails(props: {teamId: number}) {
                     value={specialTeamsRank ?? data?.team_details[0].special_teams_ranking}
                     onChange={(fieldValue) => setSpecialTeamsRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent>
                 <Typography>
                     Coaching Factor
                 </Typography>
@@ -87,7 +102,9 @@ function AdminTeamDetails(props: {teamId: number}) {
                     value={coachingFactor ?? data?.team_details[0].coaching_factor}
                     onChange={(fieldValue) => setCoachingFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
-                
+            </DialogContent>
+            
+            <DialogContent>
                 <Typography>
                     Injury Severity
                 </Typography>
@@ -95,7 +112,9 @@ function AdminTeamDetails(props: {teamId: number}) {
                     value={injurySeverity ?? data?.team_details[0].injury_severity}
                     onChange={(fieldValue) => setInjurySeverity(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent>
                 <Typography>
                     Talent Factor
                 </Typography>
@@ -103,11 +122,14 @@ function AdminTeamDetails(props: {teamId: number}) {
                     value={talentFactor ?? data?.team_details[0].talent_factor}
                     onChange={(fieldValue) => setTalentFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent dividers>
                 <Button onClick={handleUpdate}>
                     Update
                 </Button>
             </DialogContent>
+            
         </div>
     );
 }

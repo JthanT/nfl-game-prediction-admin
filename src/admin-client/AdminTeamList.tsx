@@ -3,11 +3,14 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import AdminTeamDetails from '../admin-client/AdminTeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
 
 function AdminTeamList() {
-    const { data } = useQuery(TEAM_DETAILS_QUERY);
+    const { data, refetch } = useQuery(TEAM_DETAILS_QUERY);
 
     const classes = useStyles();
 
@@ -26,7 +29,12 @@ function AdminTeamList() {
     return (
         <div className={classes.root}>
             <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'md'}>
-                <AdminTeamDetails teamId={id} />
+                <DialogActions>
+                    <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
+                        <CloseIcon/>
+                    </IconButton>
+                </DialogActions>
+                <AdminTeamDetails teamId={id} refetchTeamDetails={refetch} />
             </Dialog>
             <MUIDataTable
                 data={data ? data.team_details : []}
@@ -54,6 +62,10 @@ function AdminTeamList() {
                         label: 'Special Teams Rank',
                         name: 'special_teams_ranking',
                     },
+                    {
+                        label: 'Team Grade',
+                        name: 'grade',
+                    },
                 ]}
                 title=""
                 options={{
@@ -77,6 +89,13 @@ const useStyles = makeStyles({
     root: {
         backgroundColor: 'black',
         height: '100vh'
+    },
+    closeDialogButton: {
+        position: 'absolute',
+        left: '95%',
+        top: '2%',
+        backgroundColor: 'lightgray',
+        color: 'gray',
     },
     center: {
         backgroundColor: 'white',
