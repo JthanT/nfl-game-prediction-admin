@@ -3,6 +3,9 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import AdminGameInsert from '../admin-client/AdminGameInsert';
 import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
@@ -37,10 +40,20 @@ function AdminGameList() {
 
     return (
         <div>
-            <Dialog onClose={handleCloseDetails} open={openDetails}>
+            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth = {'md'}>
+                <DialogActions>
+                    <IconButton size="small" onClick={handleCloseDetails} className={classes.closeDialogButton}>
+                        <CloseIcon/>
+                    </IconButton>
+                </DialogActions>
                 <AdminModifyGameDetails gameId={id} refetchGameDetails={refetch} />
             </Dialog>
             <Dialog onClose={handleCloseGameInsert} open={openGameInsert}>
+                <DialogActions>
+                    <IconButton size="small" onClick={handleCloseGameInsert} className={classes.closeDialogButton}>
+                        <CloseIcon/>
+                    </IconButton>
+                </DialogActions>
                 <AdminGameInsert refetchGames={refetch} />
             </Dialog>
             
@@ -71,7 +84,7 @@ function AdminGameList() {
                         name: 'date',
                     },
                     {
-                        label: 'Time',
+                        label: 'Time (CST)',
                         name: 'time',
                     },
                 ]}
@@ -94,6 +107,13 @@ function AdminGameList() {
 export default AdminGameList;
 
 const useStyles = makeStyles({
+    closeDialogButton: {
+        position: 'absolute',
+        left: '95%',
+        top: '2%',
+        backgroundColor: 'lightgray',
+        color: 'gray',
+    },
     center: {
         backgroundColor: 'white',
         position: 'absolute',

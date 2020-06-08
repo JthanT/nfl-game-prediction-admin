@@ -3,6 +3,9 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import TeamDetails from './TeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
 
@@ -26,7 +29,12 @@ function TeamList() {
 
     return (
         <div>
-            <Dialog onClose={handleClose} open={open}>
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth={'md'}>
+                <DialogActions>
+                    <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
+                        <CloseIcon/>
+                    </IconButton>
+                </DialogActions>
                 <TeamDetails teamId={id} />
             </Dialog>
             <MUIDataTable
@@ -55,6 +63,10 @@ function TeamList() {
                         label: 'Special Teams Rank',
                         name: 'special_teams_ranking',
                     },
+                    {
+                        label: 'Team Grade',
+                        name: 'grade',
+                    },
                 ]}
                 title=""
                 options={{
@@ -77,6 +89,13 @@ export default TeamList;
 const useStyles = makeStyles({
     table: {
         backgroundColor: 'black',
+    },
+    closeDialogButton: {
+        position: 'absolute',
+        left: '95%',
+        top: '2%',
+        backgroundColor: 'lightgray',
+        color: 'gray',
     },
     center: {
         backgroundColor: 'white',

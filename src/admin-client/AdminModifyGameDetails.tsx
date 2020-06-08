@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -61,6 +62,10 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
 
     return (
         <div>
+            <DialogTitle>
+                {data?.game_schedule[0].team_1_name} @ {data?.game_schedule[0].team_2_name}
+            </DialogTitle>
+
             <DialogContent>
                 <Typography>
                     Away Team
@@ -69,7 +74,9 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
                     value={awayTeam ?? data?.game_schedule[0].team_1_name}
                     onChange={(fieldValue) => setAwayTeam(fieldValue.target.value ? fieldValue.target.value : "")}
                 />
+            </DialogContent>
 
+            <DialogContent>
                 <Typography>
                     Home Team
                 </Typography>
@@ -77,7 +84,9 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
                     value={homeTeam ?? data?.game_schedule[0].team_2_name}
                     onChange={(fieldValue) => setHomeTeam(fieldValue.target.value ? fieldValue.target.value : "")}
                 />
-
+            </DialogContent>
+                
+            <DialogContent>
                 <Typography>
                     Date
                 </Typography>
@@ -85,7 +94,9 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
                     value={date ?? data?.game_schedule[0].date}
                     onChange={(fieldValue) => setDate(fieldValue.target.value ? fieldValue.target.value : "")}
                 />
-
+            </DialogContent>
+                
+            <DialogContent>
                 <Typography>
                     Time
                 </Typography>
@@ -93,7 +104,9 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
                     value={time ?? data?.game_schedule[0].time}
                     onChange={(fieldValue) => setTime(fieldValue.target.value ? fieldValue.target.value : "")}
                 />
+            </DialogContent>
                 
+            <DialogContent>
                 <Typography>
                     Week
                 </Typography>
@@ -101,7 +114,9 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
                     value={week ?? data?.game_schedule[0].week}
                     onChange={(fieldValue) => setWeek(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent>
                 <Typography>
                     Year
                 </Typography>
@@ -109,7 +124,9 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
                     value={leagueYear ?? data?.game_schedule[0].league_year}
                     onChange={(fieldValue) => setLeagueYear(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                 />
+            </DialogContent>
 
+            <DialogContent dividers>
                 <Button onClick={handleGameUpdate}>
                     Update
                 </Button>
