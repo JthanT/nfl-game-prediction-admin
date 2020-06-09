@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Typography from '@material-ui/core/Typography';
-import { GAME_SCHEDULE_BY_ID_QUERY } from '../graphql/queries/game.query';
+import { GAME_SCHEDULE_BY_ID_QUERY } from '../graphql/queries/game.queries';
 
 function GameDetails(props: {gameId: number}) {
     const { data } = useQuery(

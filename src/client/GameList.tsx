@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import GameDetails from './GameDetails';
-import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.query';
+import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.queries';
 
 
 function GameList() {

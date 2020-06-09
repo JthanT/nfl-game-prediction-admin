@@ -6,8 +6,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.query';
-import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/queries/team.query';
+import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.queries';
+import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/mutations/team.mutations';
 
 function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
 

@@ -10,8 +10,8 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import { GAME_SCHEDULE_INSERT } from '../graphql/queries/game.query';
-import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
+import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
+import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
 function AdminGameInsert(props: {refetchGames?: () => void}) {
 
@@ -80,7 +80,7 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                             <Select
                                 value={awayTeam}
                                 labelId="away-team-id"
-                                onChange={(fieldValue) => setAwayTeam(fieldValue.target.name)}
+                                onChange={(fieldValue) => setAwayTeam(fieldValue.target.value as string)}
                                 onClose={handleCloseAwayTeamSelector}
                                 onOpen={handleOpenAwayTeamSelector}
                             >
@@ -99,7 +99,7 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                             <Select
                                 value={homeTeam}
                                 labelId="home-team-id"
-                                onChange={(fieldValue) => setHomeTeam(fieldValue.target.name)}
+                                onChange={(fieldValue) => setHomeTeam(fieldValue.target.value as string)}
                                 onClose={handleCloseHomeTeamSelector}
                                 onOpen={handleOpenHomeTeamSelector}
                             >

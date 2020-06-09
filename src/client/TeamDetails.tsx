@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Typography from '@material-ui/core/Typography';
-import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.query';
+import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.queries';
 
 function TeamDetails(props: {teamId: number}) {
     const { data } = useQuery(
