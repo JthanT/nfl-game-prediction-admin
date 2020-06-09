@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
+import { makeStyles } from '@material-ui/core/styles';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
@@ -58,80 +59,102 @@ function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => voi
         };
     };
 
+    const classes = useStyles();
+
     return (
         <div>
             <DialogTitle>
                 Edit Team Data: {data?.team_details[0].name}
             </DialogTitle>
-
-            <DialogContent>
-                <Typography>
-                    Offence Rank
-                </Typography>
-                <TextField
-                    value={offenceRank ?? data?.team_details[0].offence_ranking}
-                    onChange={(fieldValue) => setOffenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                />
-            </DialogContent>
-
-            <DialogContent>
-                <Typography>
-                    Defence Rank
-                </Typography>
-                <TextField
-                    value={defenceRank ?? data?.team_details[0].defence_ranking}
-                    onChange={(fieldValue) => setDefenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                />
-            </DialogContent>
-
-            <DialogContent>
-                <Typography>
-                    Special Teams Rank
-                </Typography>
-                <TextField
-                    value={specialTeamsRank ?? data?.team_details[0].special_teams_ranking}
-                    onChange={(fieldValue) => setSpecialTeamsRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                />
-            </DialogContent>
-
-            <DialogContent>
-                <Typography>
-                    Coaching Factor
-                </Typography>
-                <TextField
-                    value={coachingFactor ?? data?.team_details[0].coaching_factor}
-                    onChange={(fieldValue) => setCoachingFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                />
-            </DialogContent>
-            
-            <DialogContent>
-                <Typography>
-                    Injury Severity
-                </Typography>
-                <TextField
-                    value={injurySeverity ?? data?.team_details[0].injury_severity}
-                    onChange={(fieldValue) => setInjurySeverity(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                />
-            </DialogContent>
-
-            <DialogContent>
-                <Typography>
-                    Talent Factor
-                </Typography>
-                <TextField
-                    value={talentFactor ?? data?.team_details[0].talent_factor}
-                    onChange={(fieldValue) => setTalentFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                />
-            </DialogContent>
-
             <DialogContent dividers>
-                <Button onClick={handleUpdate}>
-                    Update
-                </Button>
+                <DialogContent className={classes.inputRow}>    
+                    <DialogContent>
+                        <Typography>
+                            Offence Rank
+                        </Typography>
+                        <TextField
+                            value={offenceRank ?? data?.team_details[0].offence_ranking}
+                            onChange={(fieldValue) => setOffenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <Typography>
+                            Defence Rank
+                        </Typography>
+                        <TextField
+                            value={defenceRank ?? data?.team_details[0].defence_ranking}
+                            onChange={(fieldValue) => setDefenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <Typography>
+                            Special Teams Rank
+                        </Typography>
+                        <TextField
+                            value={specialTeamsRank ?? data?.team_details[0].special_teams_ranking}
+                            onChange={(fieldValue) => setSpecialTeamsRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
+                        />
+                    </DialogContent>
+                </DialogContent>
+
+                <DialogContent className={classes.inputRow}>
+                    <DialogContent>
+                        <Typography>
+                            Coaching Factor
+                        </Typography>
+                        <TextField
+                            value={coachingFactor ?? data?.team_details[0].coaching_factor}
+                            onChange={(fieldValue) => setCoachingFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
+                        />
+                    </DialogContent>
+                    
+                    <DialogContent>
+                        <Typography>
+                            Injury Severity
+                        </Typography>
+                        <TextField
+                            value={injurySeverity ?? data?.team_details[0].injury_severity}
+                            onChange={(fieldValue) => setInjurySeverity(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
+                        />
+                    </DialogContent>
+
+                    <DialogContent>
+                        <Typography>
+                            Talent Factor
+                        </Typography>
+                        <TextField
+                            value={talentFactor ?? data?.team_details[0].talent_factor}
+                            onChange={(fieldValue) => setTalentFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
+                        />
+                    </DialogContent>
+                </DialogContent>
+
+                <DialogContent className={classes.buttonRow}>
+                    <Button onClick={handleUpdate} variant="outlined" className={classes.updateButton}>
+                        Update
+                    </Button>
+                </DialogContent>
             </DialogContent>
-            
         </div>
     );
 }
 
 export default AdminTeamDetails;
+
+const useStyles = makeStyles({
+    inputRow: {
+        display: 'flex',
+    },
+    teamSelectors: {
+        display: 'flex',
+    },
+    updateButton: {
+        textTransform: 'none',
+    },
+    buttonRow: {
+        display: 'flex', 
+        justifyContent: 'flex-end',
+    },
+});

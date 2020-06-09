@@ -72,8 +72,8 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
             <DialogTitle>
                 Create Game
             </DialogTitle>
-            <DialogContent>
-                <DialogContent className={classes.inputRow} dividers>
+            <DialogContent dividers>
+                <DialogContent className={classes.inputRow}>
                     <DialogContent>
                         <FormControl className={classes.teamSelectors}>
                             <InputLabel htmlFor="away-team-id">Away Team</InputLabel>
@@ -92,6 +92,7 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                             </Select>
                         </FormControl>
                     </DialogContent>
+                    
                     <DialogContent>
                         <FormControl className={classes.teamSelectors}>
                             <InputLabel htmlFor="home-team-id">Home Team</InputLabel>
@@ -132,7 +133,7 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                     </DialogContent>
                 </DialogContent>
                 
-                <DialogContent className={classes.inputRow} dividers>
+                <DialogContent className={classes.inputRow}>
                     <DialogContent>
                         <Typography>
                             Week
