@@ -65,7 +65,7 @@ function AdminModifyGameDetails(props: {gameId: number, refetchGameDetails?: () 
             <DialogTitle>
                 {data?.game_schedule[0].team_1_name} @ {data?.game_schedule[0].team_2_name}
             </DialogTitle>
-
+            
             <DialogContent>
                 <Typography>
                     Away Team
