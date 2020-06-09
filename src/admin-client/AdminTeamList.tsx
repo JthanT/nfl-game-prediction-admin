@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import AdminTeamDetails from '../admin-client/AdminTeamDetails';
-import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.query';
+import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
 function AdminTeamList() {
     const { data, refetch } = useQuery(TEAM_DETAILS_QUERY);

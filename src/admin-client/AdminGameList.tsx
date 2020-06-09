@@ -3,14 +3,13 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import AdminGameInsert from '../admin-client/AdminGameInsert';
 import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
-import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.query';
+import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.queries';
 
 function AdminGameList() {
 
@@ -47,7 +46,7 @@ function AdminGameList() {
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
-                <AdminModifyGameDetails gameId={id} refetchGameDetails={refetch} />
+                <AdminModifyGameDetails gameId={id} refetchGameDetails={refetch} closeDetailsMenu={handleCloseDetails} />
             </Dialog>
             <Dialog onClose={handleCloseGameInsert} open={openGameInsert} fullWidth={true} maxWidth={'lg'}>
                 <DialogActions>
