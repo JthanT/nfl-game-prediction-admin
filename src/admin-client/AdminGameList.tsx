@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -40,7 +41,7 @@ function AdminGameList() {
 
     return (
         <div>
-            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth = {'md'}>
+            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth={'md'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleCloseDetails} className={classes.closeDialogButton}>
                         <CloseIcon/>
@@ -48,7 +49,7 @@ function AdminGameList() {
                 </DialogActions>
                 <AdminModifyGameDetails gameId={id} refetchGameDetails={refetch} />
             </Dialog>
-            <Dialog onClose={handleCloseGameInsert} open={openGameInsert}>
+            <Dialog onClose={handleCloseGameInsert} open={openGameInsert} fullWidth={true} maxWidth={'lg'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleCloseGameInsert} className={classes.closeDialogButton}>
                         <CloseIcon/>
