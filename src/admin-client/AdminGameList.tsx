@@ -40,7 +40,7 @@ function AdminGameList() {
 
     return (
         <div>
-            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth={'md'}>
+            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth={'lg'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleCloseDetails} className={classes.closeDialogButton}>
                         <CloseIcon/>
@@ -109,7 +109,7 @@ export default AdminGameList;
 const useStyles = makeStyles({
     closeDialogButton: {
         position: 'absolute',
-        left: '95%',
+        left: '97%',
         top: '2%',
         backgroundColor: 'lightgray',
         color: 'gray',

@@ -29,7 +29,7 @@ function TeamList() {
 
     return (
         <div>
-            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth={'md'}>
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth={'lg'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
                         <CloseIcon/>
@@ -92,7 +92,7 @@ const useStyles = makeStyles({
     },
     closeDialogButton: {
         position: 'absolute',
-        left: '95%',
+        left: '97%',
         top: '2%',
         backgroundColor: 'lightgray',
         color: 'gray',
