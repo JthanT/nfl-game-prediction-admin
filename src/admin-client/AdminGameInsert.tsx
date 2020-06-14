@@ -15,6 +15,10 @@ import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
 function AdminGameInsert(props: {refetchGames?: () => void}) {
 
+    const { data } = useQuery(TEAM_DETAILS_QUERY);
+
+    const [insertGame] = useMutation(GAME_SCHEDULE_INSERT);
+
     const [awayTeam, setAwayTeam] = useState<string>();
     const [homeTeam, setHomeTeam] = useState<string>();
     const [leagueYear, setLeagueYear] = useState<number>();
@@ -23,10 +27,6 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
     const [date, setDate] = useState<string>();
     const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
     const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
-
-    const [insertGame] = useMutation(GAME_SCHEDULE_INSERT);
-
-    const { data } = useQuery(TEAM_DETAILS_QUERY);
 
     const teamOptions = data?.team_details.map((team) => team.name);
 

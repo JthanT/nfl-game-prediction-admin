@@ -24,20 +24,6 @@ function AdminModifyGameDetails(
     }
 ) {
 
-    const [awayTeam, setAwayTeam] = useState<string>();
-    const [homeTeam, setHomeTeam] = useState<string>();
-    const [leagueYear, setLeagueYear] = useState<number>();
-    const [time, setTime] = useState<string>();
-    const [week, setWeek] = useState<number>();
-    const [date, setDate] = useState<string>();
-    const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
-    const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
-    const [openDeletionConfirmation, setOpenDeletionConfirmation] = useState<boolean>(false);
-
-    const [updateGameDetails] = useMutation(GAME_SCHEDULE_UPDATE_BY_ID);
-
-    const [deleteGameDetails] = useMutation(GAME_SCHEDULE_DELETE_BY_ID);
-
     const teamData: { data } = useQuery(TEAM_DETAILS_QUERY);
     
     const gameData: { data } = useQuery(
@@ -48,6 +34,20 @@ function AdminModifyGameDetails(
             },
         }
     );
+
+    const [updateGameDetails] = useMutation(GAME_SCHEDULE_UPDATE_BY_ID);
+
+    const [deleteGameDetails] = useMutation(GAME_SCHEDULE_DELETE_BY_ID);
+
+    const [awayTeam, setAwayTeam] = useState<string>();
+    const [homeTeam, setHomeTeam] = useState<string>();
+    const [leagueYear, setLeagueYear] = useState<number>();
+    const [time, setTime] = useState<string>();
+    const [week, setWeek] = useState<number>();
+    const [date, setDate] = useState<string>();
+    const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
+    const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
+    const [openDeletionConfirmation, setOpenDeletionConfirmation] = useState<boolean>(false);
 
     const teamOptions = teamData?.data?.team_details.map((team) => team.name);
 

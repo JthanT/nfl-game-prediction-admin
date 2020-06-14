@@ -66,7 +66,7 @@ function App() {
                 Team List
               </Link>
               <Link to={"/game-list"} className={classes.navBarSectionTitles}>
-                Predictions
+                Schedule
               </Link>
             </Toolbar>
           </AppBar>
@@ -90,6 +90,7 @@ export default App;
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
+    backgroundColor: '#dae4f2',
   },
   navBarTitle: {
     flexGrow: 1,
@@ -100,6 +101,6 @@ const useStyles = makeStyles({
     color: "white",
   },
   navBar: {
-    background: '#515050',
+    backgroundColor: '#1a468a',
   }
 });
