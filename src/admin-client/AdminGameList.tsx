@@ -9,15 +9,22 @@ import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
 import AdminGameInsert from '../admin-client/AdminGameInsert';
 import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
-import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.queries';
+import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function AdminGameList() {
+
+    const { data, refetch } = useQuery(
+        GAME_SCHEDULE_BY_YEAR_QUERY,
+        {
+            variables: {
+                leagueYear: 2020,
+            },
+        }
+    );
 
     const [openDetails, setOpenDetails] = useState(false);
     const [openGameInsert, setOpenGameInsert] = useState(false);
     const [id, setId] = useState<number>(0);
-    
-    const { data, refetch } = useQuery(GAME_SCHEDULE_QUERY);
 
     const handleOpenDetails = (gameId: number) => {
         setId(gameId);
@@ -40,7 +47,7 @@ function AdminGameList() {
 
     return (
         <div>
-            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth={'md'}>
+            <Dialog onClose={handleCloseDetails} open={openDetails} fullWidth={true} maxWidth={'lg'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleCloseDetails} className={classes.closeDialogButton}>
                         <CloseIcon/>
@@ -56,50 +63,51 @@ function AdminGameList() {
                 </DialogActions>
                 <AdminGameInsert refetchGames={refetch} />
             </Dialog>
-            
-            <MUIDataTable
-                data={data ? data.game_schedule : []}
-                columns={[
-                    {
-                        label: ' ',
-                        name: 'game_id',
-                        options: {
-                            display: "excluded",
+            <div className={classes.tableContent}>
+                <MUIDataTable
+                    data={data ? data.game_schedule : []}
+                    columns={[
+                        {
+                            label: ' ',
+                            name: 'game_id',
+                            options: {
+                                display: "excluded",
+                            },
                         },
-                    },
-                    {
-                        label: 'Away Team',
-                        name: 'team_1_name',
-                    },
-                    {
-                        label: 'Home Team',
-                        name: 'team_2_name',
-                    },
-                    {
-                        label: 'Predicted Winner',
-                        name: 'predicted_winner',
-                    },
-                    {
-                        label: 'Date',
-                        name: 'date',
-                    },
-                    {
-                        label: 'Time (CST)',
-                        name: 'time',
-                    },
-                ]}
-                title={<Button variant="outlined" onClick={handleOpenGameInsert}>Add Game</Button>}
-                options={{
-                    print: false,
-                    download: false,
-                    viewColumns: false,
-                    selectableRows: 'none',
-                    filter: false,
-                    rowsPerPage: 16,
-                    rowsPerPageOptions: [],
-                    onRowClick: (rowName) => handleOpenDetails(parseInt(rowName[0])),
-                }}
-            />
+                        {
+                            label: 'Away Team',
+                            name: 'team_1_name',
+                        },
+                        {
+                            label: 'Home Team',
+                            name: 'team_2_name',
+                        },
+                        {
+                            label: 'Predicted Winner',
+                            name: 'predicted_winner',
+                        },
+                        {
+                            label: 'Date',
+                            name: 'date',
+                        },
+                        {
+                            label: 'Time (CST)',
+                            name: 'time',
+                        },
+                    ]}
+                    title={<Button variant="outlined" onClick={handleOpenGameInsert}>Add Game</Button>}
+                    options={{
+                        print: false,
+                        download: false,
+                        viewColumns: false,
+                        selectableRows: 'none',
+                        filter: false,
+                        rowsPerPage: 16,
+                        rowsPerPageOptions: [],
+                        onRowClick: (rowName) => handleOpenDetails(parseInt(rowName[0])),
+                    }}
+                />
+            </div>
         </div>
     );
 }
@@ -107,6 +115,9 @@ function AdminGameList() {
 export default AdminGameList;
 
 const useStyles = makeStyles({
+    tableContent: {
+        padding: '10px',
+    },
     closeDialogButton: {
         position: 'absolute',
         left: '95%',
@@ -114,14 +125,7 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgray',
         color: 'gray',
     },
-    center: {
-        backgroundColor: 'white',
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)'
+    teamSelectors: {
+        display: 'flex',
     },
-    cell: {
-        width: '100%',
-    }
 });

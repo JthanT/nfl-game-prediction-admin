@@ -11,15 +11,6 @@ import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/mutations/team.mutations';
 
 function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
 
-    const [offenceRank, setOffenceRank] = useState<number>();
-    const [defenceRank, setDefenceRank] = useState<number>();
-    const [specialTeamsRank, setSpecialTeamsRank] = useState<number>();
-    const [coachingFactor, setCoachingFactor] = useState<number>();
-    const [injurySeverity, setInjurySeverity] = useState<number>();
-    const [talentFactor, setTalentFactor] = useState<number>();
-
-    const [updateTeamDetails] = useMutation(TEAM_DETAILS_UPDATE_BY_ID);
-    
     const { data } = useQuery(
         TEAM_DETAILS_BY_ID_QUERY,
         {
@@ -28,6 +19,15 @@ function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => voi
             },
         }
     );
+
+    const [updateTeamDetails] = useMutation(TEAM_DETAILS_UPDATE_BY_ID);
+
+    const [offenceRank, setOffenceRank] = useState<number>();
+    const [defenceRank, setDefenceRank] = useState<number>();
+    const [specialTeamsRank, setSpecialTeamsRank] = useState<number>();
+    const [coachingFactor, setCoachingFactor] = useState<number>();
+    const [injurySeverity, setInjurySeverity] = useState<number>();
+    const [talentFactor, setTalentFactor] = useState<number>();
 
     const handleUpdate = () => {
         updateTeamDetails(

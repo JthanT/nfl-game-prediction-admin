@@ -7,79 +7,95 @@ import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import GameDetails from './GameDetails';
-import { GAME_SCHEDULE_QUERY } from '../graphql/queries/game.queries';
-
+import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function GameList() {
-    const { data } = useQuery(GAME_SCHEDULE_QUERY);
 
-    const classes = useStyles();
+    const { data } = useQuery(
+        GAME_SCHEDULE_BY_YEAR_QUERY,
+        {
+            variables: {
+                leagueYear: 2020,
+            },
+        }
+    );
 
     const [open, setOpen] = useState(false);
     const [id, setId] = useState<number>(0);
 
-    const handleOpen = (gameId: string) => {
+    const handleOpenGameDetails = (gameId: string) => {
         setId(parseInt(gameId));
         setOpen(true);
     };
 
-    const handleClose = () => {
+    const handleCloseGameDetails = () => {
         setOpen(false);
     };
 
+    const classes = useStyles();
+
     return (
-        <div className={classes.root}>
-            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth={'md'}>
+        <div>
+            <Dialog onClose={handleCloseGameDetails} open={open} fullWidth={true} maxWidth={'md'}>
                 <DialogActions>
-                    <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
+                    <IconButton size="small" onClick={handleCloseGameDetails} className={classes.closeDialogButton}>
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
                 <GameDetails gameId={id} />
             </Dialog>
-            <MUIDataTable
-                data={data ? data.game_schedule : []}
-                columns={[
-                    {
-                        label: ' ',
-                        name: 'game_id',
-                        options: {
-                            display: "excluded",
+            <div className={classes.tableContent}>
+                <MUIDataTable
+                    data={data ? data.game_schedule : []}
+                    columns={[
+                        {
+                            label: ' ',
+                            name: 'game_id',
+                            options: {
+                                display: "excluded",
+                            },
                         },
-                    },
-                    {
-                        label: 'Away Team',
-                        name: 'team_1_name',
-                    },
-                    {
-                        label: 'Home Team',
-                        name: 'team_2_name',
-                    },
-                    {
-                        label: 'Predicted Winner',
-                        name: 'predicted_winner',
-                    },
-                    {
-                        label: 'Date',
-                        name: 'date',
-                    },
-                    {
-                        label: 'Time (CST)',
-                        name: 'time',
-                    },
-                ]}
-                title=""
-                options={{
-                    print: false,
-                    download: false,
-                    viewColumns: false,
-                    selectableRows: 'none',
-                    filter: false,
-                    rowsPerPage: 16,
-                    rowsPerPageOptions: [],
-                    onRowClick: (rowName) => handleOpen(rowName[0]),
-                }}
-            />
+                        {
+                            label: 'Away Team',
+                            name: 'team_1_name',
+                        },
+                        {
+                            label: 'Home Team',
+                            name: 'team_2_name',
+                        },
+                        {
+                            label: 'Predicted Winner',
+                            name: 'predicted_winner',
+                        },
+                        {
+                            label: 'Date',
+                            name: 'date',
+                        },
+                        {
+                            label: 'Time (CST)',
+                            name: 'time',
+                        },
+                        {
+                            label: 'League Year',
+                            name: 'league_year',
+                            options: {
+                                display: "excluded",
+                            },
+                        },
+                    ]}
+                    title=""
+                    options={{
+                        print: false,
+                        download: false,
+                        viewColumns: false,
+                        selectableRows: 'none',
+                        filter: false,
+                        rowsPerPage: 16,
+                        rowsPerPageOptions: [],
+                        onRowClick: (rowName) => handleOpenGameDetails(rowName[0]),
+                    }}
+                />
+            </div>
         </div>
     );
 }
@@ -87,9 +103,8 @@ function GameList() {
 export default GameList;
 
 const useStyles = makeStyles({
-    root: {
-        backgroundColor: 'black',
-        height: '100vh'
+    tableContent: {
+        padding: '10px',
     },
     closeDialogButton: {
         position: 'absolute',
@@ -98,14 +113,7 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgray',
         color: 'gray',
     },
-    center: {
-        backgroundColor: 'white',
-        position: 'absolute',
-        left: '50%',
-        top: '50%',
-        transform: 'translate(-50%, -50%)'
+    teamSelectors: {
+        display: 'flex',
     },
-    cell: {
-        width: '100%',
-    }
 });
