@@ -7,17 +7,31 @@ import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import AdminGameInsert from '../admin-client/AdminGameInsert';
 import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function AdminGameList() {
 
+    const currentWeek = 1;
+    const currentYear = 2020;
+    const years = ["2020", "2021"];
+    const weeks = [
+        "1", "2", "3", "4", "5", "6", "7", "8", 
+        "9", "10", "11", "12", "13", "14", "15", "16",
+        "17"
+    ];
+
     const { data, refetch } = useQuery(
         GAME_SCHEDULE_BY_YEAR_QUERY,
         {
             variables: {
-                leagueYear: 2020,
+                leagueYear: currentYear,
+                leagueWeek: currentWeek,
             },
         }
     );
@@ -25,6 +39,10 @@ function AdminGameList() {
     const [openDetails, setOpenDetails] = useState(false);
     const [openGameInsert, setOpenGameInsert] = useState(false);
     const [id, setId] = useState<number>(0);
+    const [leagueYear, setLeagueYear] = useState<number>(2020);
+    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
+    const [leagueWeek, setLeagueWeek] = useState<number>(1);
+    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
 
     const handleOpenDetails = (gameId: number) => {
         setId(gameId);
@@ -41,6 +59,38 @@ function AdminGameList() {
 
     const handleCloseGameInsert = () => {
         setOpenGameInsert(false);
+    };
+
+    const handleOpenYearSelector = () => {
+        setOpenYearSelector(true);
+    };
+
+    const handleCloseYearSelector = () => {
+        setOpenYearSelector(false);
+    };
+
+    const handleLeagueYearSelect = (year: number) => {
+        setLeagueYear(year);
+        refetch({
+            leagueYear: year,
+            leagueWeek: 1
+        });
+    };
+
+    const handleOpenWeekSelector = () => {
+        setOpenWeekSelector(true);
+    };
+
+    const handleCloseWeekSelector = () => {
+        setOpenWeekSelector(false);
+    };
+
+    const handleWeekSelect = (week: number) => {
+        setLeagueWeek(week);
+        refetch({
+            leagueYear: leagueYear,
+            leagueWeek: week,
+        });
     };
 
     const classes = useStyles();
@@ -95,7 +145,57 @@ function AdminGameList() {
                             name: 'time',
                         },
                     ]}
-                    title={<Button variant="outlined" onClick={handleOpenGameInsert}>Add Game</Button>}
+                    title={(
+                        <div className={classes.selectors}>
+                            <div className={classes.addGameButton}>
+                                <Button 
+                                    className={classes.button} 
+                                    variant="outlined" 
+                                    onClick={handleOpenGameInsert}
+                                >
+                                    Add Game
+                                </Button>
+                            </div>
+                            <FormControl className={classes.yearSelector}>
+                                <InputLabel htmlFor="year-id">League Year</InputLabel>
+                                <Select
+                                    value={leagueYear}
+                                    labelId="year-id"
+                                    onChange={
+                                        (fieldValue) => 
+                                            handleLeagueYearSelect(fieldValue.target.value as number)
+                                    }
+                                    onClose={handleCloseYearSelector}
+                                    onOpen={handleOpenYearSelector}
+                                >
+                                    {(
+                                        years.map((year) => {
+                                            return <MenuItem value={year}>{year}</MenuItem>
+                                        })
+                                    )}
+                                </Select>
+                            </FormControl>
+                            <FormControl className={classes.weekSelector}>
+                                <InputLabel htmlFor="week-id">Week</InputLabel>
+                                <Select
+                                    value={leagueWeek}
+                                    labelId="week-id"
+                                    onChange={
+                                        (fieldValue) => 
+                                            handleWeekSelect(fieldValue.target.value as number)
+                                    }
+                                    onClose={handleCloseWeekSelector}
+                                    onOpen={handleOpenWeekSelector}
+                                >
+                                    {(
+                                        weeks.map((week) => {
+                                            return <MenuItem value={week}>{week}</MenuItem>
+                                        })
+                                    )}
+                                </Select>
+                            </FormControl>
+                        </div>
+                    )}
                     options={{
                         print: false,
                         download: false,
@@ -125,7 +225,22 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgray',
         color: 'gray',
     },
-    teamSelectors: {
+    button: {
+        textTransform: 'none',
+    },
+    selectors: {
         display: 'flex',
+    },
+    addGameButton: {
+        paddingRight: '10px',
+    },
+    yearSelector: {
+        display: 'flex',
+        width: '25%',
+        paddingRight: '10px',
+    },
+    weekSelector: {
+        display: 'flex',
+        width: '20%',
     },
 });
