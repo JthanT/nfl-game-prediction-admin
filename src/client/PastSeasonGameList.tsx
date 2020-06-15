@@ -6,12 +6,16 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import GameDetails from './GameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
-function GameList() {
+function PastSeasonGameList() {
 
-    const { data } = useQuery(
+    const { data, refetch } = useQuery(
         GAME_SCHEDULE_BY_YEAR_QUERY,
         {
             variables: {
@@ -22,6 +26,10 @@ function GameList() {
 
     const [open, setOpen] = useState(false);
     const [id, setId] = useState<number>(0);
+    const [year, setYear] = useState<number>(2020);
+    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
+
+    const leagueYear = ["2020", "2021"];
 
     const handleOpenGameDetails = (gameId: string) => {
         setId(parseInt(gameId));
@@ -30,6 +38,21 @@ function GameList() {
 
     const handleCloseGameDetails = () => {
         setOpen(false);
+    };
+
+    const handleOpenYearSelector = () => {
+        setOpenYearSelector(true);
+    };
+
+    const handleCloseYearSelector = () => {
+        setOpenYearSelector(false);
+    };
+
+    const handleLeagueYearSelect = (year: number) => {
+        setYear(year);
+        refetch({
+            leagueYear: year
+        });
     };
 
     const classes = useStyles();
@@ -64,19 +87,35 @@ function GameList() {
                             name: 'team_2_name',
                         },
                         {
+                            label: 'Winner',
+                            name: 'winning_team',
+                        },
+                        {
                             label: 'Predicted Winner',
                             name: 'predicted_winner',
                         },
-                        {
-                            label: 'Date',
-                            name: 'date',
-                        },
-                        {
-                            label: 'Time (CST)',
-                            name: 'time',
-                        },
                     ]}
-                    title=""
+                    title={(
+                        <FormControl className={classes.yearSelector}>
+                            <InputLabel htmlFor="year-id">League Year</InputLabel>
+                            <Select
+                                value={year}
+                                labelId="year-id"
+                                onChange={
+                                    (fieldValue) => 
+                                        handleLeagueYearSelect(fieldValue.target.value as number)
+                                }
+                                onClose={handleCloseYearSelector}
+                                onOpen={handleOpenYearSelector}
+                            >
+                                {(
+                                    leagueYear.map((year) => {
+                                        return <MenuItem value={year}>{year}</MenuItem>
+                                    })
+                                )}
+                            </Select>
+                        </FormControl>
+                    )}
                     options={{
                         print: false,
                         download: false,
@@ -93,7 +132,7 @@ function GameList() {
     );
 }
 
-export default GameList;
+export default PastSeasonGameList;
 
 const useStyles = makeStyles({
     tableContent: {
@@ -106,7 +145,9 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgray',
         color: 'gray',
     },
-    teamSelectors: {
+    yearSelector: {
         display: 'flex',
+        width: '25%',
     },
+
 });

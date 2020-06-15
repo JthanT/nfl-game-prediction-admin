@@ -6,6 +6,7 @@ import AdminGameList from './admin-client/AdminGameList';
 import TeamList from './client/TeamList';
 import TeamDetails from './client/TeamDetails';
 import GameList from './client/GameList';
+import PastSeasonGameList from './client/PastSeasonGameList';
 import GameDetails from './client/GameDetails';
 import ApolloClient from "apollo-client";
 import AppBar from '@material-ui/core/AppBar';
@@ -68,12 +69,16 @@ function App() {
               <Link to={"/game-list"} className={classes.navBarSectionTitles}>
                 Schedule
               </Link>
+              <Link to={"/past-season-game-list"} className={classes.navBarSectionTitles}>
+                Past Seasons
+              </Link>
             </Toolbar>
           </AppBar>
             <Switch>  
               <Route exact path='/' component={TeamList} />
               <Route path='/team-details' component={TeamDetails} />
               <Route path='/game-list' component={GameList} />
+              <Route path='/past-season-game-list' component={PastSeasonGameList} />
               <Route path='/game-details' component={GameDetails} />
               <Route path='/admin-team-list' component={AdminTeamList} />
               <Route path='/admin-game-list' component={AdminGameList} />
