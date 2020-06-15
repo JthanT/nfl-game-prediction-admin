@@ -6,22 +6,37 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
 import GameDetails from './GameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function GameList() {
 
-    const { data } = useQuery(
+    const currentWeek = 1;
+    const currentYear = 2020;
+    const weeks = [
+        "1", "2", "3", "4", "5", "6", "7", "8", 
+        "9", "10", "11", "12", "13", "14", "15", "16",
+        "17"
+    ];
+
+    const { data, refetch } = useQuery(
         GAME_SCHEDULE_BY_YEAR_QUERY,
         {
             variables: {
-                leagueYear: 2020,
+                leagueYear: currentYear,
+                leagueWeek: currentWeek
             },
         }
     );
 
     const [open, setOpen] = useState(false);
     const [id, setId] = useState<number>(0);
+    const [leagueWeek, setLeagueWeek] = useState<number>(1);
+    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
 
     const handleOpenGameDetails = (gameId: string) => {
         setId(parseInt(gameId));
@@ -30,6 +45,22 @@ function GameList() {
 
     const handleCloseGameDetails = () => {
         setOpen(false);
+    };
+
+    const handleOpenWeekSelector = () => {
+        setOpenWeekSelector(true);
+    };
+
+    const handleCloseWeekSelector = () => {
+        setOpenWeekSelector(false);
+    };
+
+    const handleWeekSelect = (week: number) => {
+        setLeagueWeek(week);
+        refetch({
+            leagueYear: currentYear,
+            leagueWeek: week,
+        });
     };
 
     const classes = useStyles();
@@ -76,7 +107,27 @@ function GameList() {
                             name: 'time',
                         },
                     ]}
-                    title=""
+                    title={(
+                        <FormControl className={classes.weekSelector}>
+                            <InputLabel htmlFor="week-id">Week</InputLabel>
+                            <Select
+                                value={leagueWeek}
+                                labelId="week-id"
+                                onChange={
+                                    (fieldValue) => 
+                                        handleWeekSelect(fieldValue.target.value as number)
+                                }
+                                onClose={handleCloseWeekSelector}
+                                onOpen={handleOpenWeekSelector}
+                            >
+                                {(
+                                    weeks.map((week) => {
+                                        return <MenuItem value={week}>{week}</MenuItem>
+                                    })
+                                )}
+                            </Select>
+                        </FormControl>
+                    )}
                     options={{
                         print: false,
                         download: false,
@@ -106,7 +157,8 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgray',
         color: 'gray',
     },
-    teamSelectors: {
+    weekSelector: {
         display: 'flex',
+        width: '20%',
     },
 });

@@ -3,10 +3,10 @@ import gql from 'graphql-tag'
 import { GAME_SCHEDULE_FRAGMENT } from '../fragments/game.fragments'
 
 export const GAME_SCHEDULE_BY_YEAR_QUERY = gql`
-    query GameScheduleQuery($leagueYear: Int!) {
+    query GameScheduleQuery($leagueYear: Int!, $leagueWeek: Int) {
         game_schedule(
             order_by: {date: asc, time: asc}, 
-            where: {league_year: {_eq: $leagueYear}}
+            where: {league_year: {_eq: $leagueYear}, week: {_eq: $leagueWeek}}
         ){
             ...game_schedule
         }

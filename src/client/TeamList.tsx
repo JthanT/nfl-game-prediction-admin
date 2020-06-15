@@ -69,7 +69,7 @@ function TeamList() {
                             name: 'grade',
                         },
                     ]}
-                    title=""
+                    title="2020 Season Team Grades"
                     options={{
                         print: false,
                         download: false,

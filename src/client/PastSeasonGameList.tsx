@@ -15,21 +15,30 @@ import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function PastSeasonGameList() {
 
+    const previousYear = 2020; //Set to 2020 until the start of the 2021 season
+    const years = ["2020", "2021"];
+    const weeks = [
+        "1", "2", "3", "4", "5", "6", "7", "8", 
+        "9", "10", "11", "12", "13", "14", "15", "16",
+        "17"
+    ];
+
     const { data, refetch } = useQuery(
         GAME_SCHEDULE_BY_YEAR_QUERY,
         {
             variables: {
-                leagueYear: 2020,
+                leagueYear: previousYear,
+                leagueWeek: 1
             },
         }
     );
 
     const [open, setOpen] = useState(false);
     const [id, setId] = useState<number>(0);
-    const [year, setYear] = useState<number>(2020);
+    const [leagueYear, setLeagueYear] = useState<number>(2020);
     const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
-
-    const leagueYear = ["2020", "2021"];
+    const [leagueWeek, setLeagueWeek] = useState<number>(1);
+    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
 
     const handleOpenGameDetails = (gameId: string) => {
         setId(parseInt(gameId));
@@ -49,9 +58,26 @@ function PastSeasonGameList() {
     };
 
     const handleLeagueYearSelect = (year: number) => {
-        setYear(year);
+        setLeagueYear(year);
         refetch({
-            leagueYear: year
+            leagueYear: year,
+            leagueWeek: 1
+        });
+    };
+
+    const handleOpenWeekSelector = () => {
+        setOpenWeekSelector(true);
+    };
+
+    const handleCloseWeekSelector = () => {
+        setOpenWeekSelector(false);
+    };
+
+    const handleWeekSelect = (week: number) => {
+        setLeagueWeek(week);
+        refetch({
+            leagueYear: leagueYear,
+            leagueWeek: week,
         });
     };
 
@@ -96,25 +122,46 @@ function PastSeasonGameList() {
                         },
                     ]}
                     title={(
-                        <FormControl className={classes.yearSelector}>
-                            <InputLabel htmlFor="year-id">League Year</InputLabel>
-                            <Select
-                                value={year}
-                                labelId="year-id"
-                                onChange={
-                                    (fieldValue) => 
-                                        handleLeagueYearSelect(fieldValue.target.value as number)
-                                }
-                                onClose={handleCloseYearSelector}
-                                onOpen={handleOpenYearSelector}
-                            >
-                                {(
-                                    leagueYear.map((year) => {
-                                        return <MenuItem value={year}>{year}</MenuItem>
-                                    })
-                                )}
-                            </Select>
-                        </FormControl>
+                        <div className={classes.selector}>
+                            <FormControl className={classes.yearSelector}>
+                                <InputLabel htmlFor="year-id">League Year</InputLabel>
+                                <Select
+                                    value={leagueYear}
+                                    labelId="year-id"
+                                    onChange={
+                                        (fieldValue) => 
+                                            handleLeagueYearSelect(fieldValue.target.value as number)
+                                    }
+                                    onClose={handleCloseYearSelector}
+                                    onOpen={handleOpenYearSelector}
+                                >
+                                    {(
+                                        years.map((year) => {
+                                            return <MenuItem value={year}>{year}</MenuItem>
+                                        })
+                                    )}
+                                </Select>
+                            </FormControl>
+                            <FormControl className={classes.weekSelector}>
+                                <InputLabel htmlFor="week-id">Week</InputLabel>
+                                <Select
+                                    value={leagueWeek}
+                                    labelId="week-id"
+                                    onChange={
+                                        (fieldValue) => 
+                                            handleWeekSelect(fieldValue.target.value as number)
+                                    }
+                                    onClose={handleCloseWeekSelector}
+                                    onOpen={handleOpenWeekSelector}
+                                >
+                                    {(
+                                        weeks.map((week) => {
+                                            return <MenuItem value={week}>{week}</MenuItem>
+                                        })
+                                    )}
+                                </Select>
+                            </FormControl>
+                        </div>
                     )}
                     options={{
                         print: false,
@@ -145,9 +192,16 @@ const useStyles = makeStyles({
         backgroundColor: 'lightgray',
         color: 'gray',
     },
+    selector: {
+        display: 'flex',
+    },
     yearSelector: {
         display: 'flex',
         width: '25%',
+        paddingRight: '10px',
     },
-
+    weekSelector: {
+        display: 'flex',
+        width: '20%',
+    },
 });
