@@ -1,17 +1,13 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { Auth0Provider } from './auth/react-auth0-spa';
+import { AUTH_CONFIG } from './auth/auth-config';
 import AdminTeamList from './admin-client/AdminTeamList';
 import AdminGameList from './admin-client/AdminGameList';
-import TeamList from './client/TeamList';
-import TeamDetails from './client/TeamDetails';
-import GameList from './client/GameList';
-import PastSeasonGameList from './client/PastSeasonGameList';
-import GameDetails from './client/GameDetails';
 import ApolloClient from "apollo-client";
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import { ApolloProvider } from "@apollo/react-hooks";
 import { WebSocketLink } from "apollo-link-ws";
@@ -25,7 +21,7 @@ interface Definition {
   operation?: string;
 };
 
-function App() {
+function App({idToken}:{idToken:string}) {
 
   const httpLink = new HttpLink({
     uri: "https://nfl-game-prediction.herokuapp.com/v1/graphql"
@@ -69,21 +65,19 @@ function App() {
               <Link to={"/game-list"} className={classes.navBarSectionTitles}>
                 Schedule
               </Link>
-              <Link to={"/past-season-game-list"} className={classes.navBarSectionTitles}>
-                Past Seasons
-              </Link>
             </Toolbar>
           </AppBar>
-            <Switch>  
-              <Route exact path='/' component={TeamList} />
-              <Route path='/team-details' component={TeamDetails} />
-              <Route path='/game-list' component={GameList} />
-              <Route path='/past-season-game-list' component={PastSeasonGameList} />
-              <Route path='/game-details' component={GameDetails} />
-              <Route path='/admin-team-list' component={AdminTeamList} />
-              <Route path='/admin-game-list' component={AdminGameList} />
-              <Route render={() => <Redirect to={{pathname: "/"}} />} />
-            </Switch>
+              <Auth0Provider
+                domain={AUTH_CONFIG.domain}
+                client_id={AUTH_CONFIG.clientId}
+                redirect_uri={AUTH_CONFIG.callbackUrl}
+              >
+                <Switch>
+                  <Route path='/' component={AdminTeamList} />
+                  <Route path='/admin-game-list' component={AdminGameList} />
+                  <Route render={() => <Redirect to={{pathname: "/"}} />} />
+                </Switch>
+              </Auth0Provider>
         </Router>
     </div>
     </ApolloProvider>
