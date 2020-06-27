@@ -77,7 +77,6 @@ export const Auth0Provider = ({
       setLoading(false);
     };
     initAuth0();
-    // eslint-disable-next-line
   }, []);
 
   const loginWithPopup = async (o: PopupLoginOptions) => {
@@ -90,8 +89,13 @@ export const Auth0Provider = ({
       setPopupOpen(false);
     }
     const user = await auth0Client!.getUser();
+
     setUser(user);
+
     setIsAuthenticated(true);
+
+    const idTokenClaims = await auth0Client!.getIdTokenClaims();
+    setIdToken(idTokenClaims.__raw);
   };
 
   const handleRedirectCallback = async () => {
@@ -106,6 +110,9 @@ export const Auth0Provider = ({
     setUser(user);
     return result;
   };
+  if (loading) {
+    return (<div>Loading</div>);
+  }
 
   if (!isAuthenticated) {
     return (
@@ -128,7 +135,7 @@ export const Auth0Provider = ({
           logout: (o: LogoutOptions | undefined) => auth0Client!.logout(o)
         }}
       >
-        <AdminLogin />);
+        <AdminLogin />
       </Auth0Context.Provider>
     );
   }

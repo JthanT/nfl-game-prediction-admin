@@ -20,7 +20,14 @@ function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => voi
         }
     );
 
-    const [updateTeamDetails] = useMutation(TEAM_DETAILS_UPDATE_BY_ID);
+    const [updateTeamDetails] = useMutation(
+        TEAM_DETAILS_UPDATE_BY_ID,
+        {
+            onError(error) {
+              console.error("error :>>", error.message);
+            },
+        }
+    );
 
     const [offenceRank, setOffenceRank] = useState<number>();
     const [defenceRank, setDefenceRank] = useState<number>();
