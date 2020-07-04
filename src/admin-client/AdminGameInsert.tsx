@@ -10,6 +10,13 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import DateFnsUtils from '@date-io/date-fns';
+import format from 'date-fns/format';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
@@ -21,12 +28,14 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
 
     const [awayTeam, setAwayTeam] = useState<string>();
     const [homeTeam, setHomeTeam] = useState<string>();
-    const [leagueYear, setLeagueYear] = useState<number>();
-    const [time, setTime] = useState<string>();
-    const [week, setWeek] = useState<number>();
-    const [date, setDate] = useState<string>();
+    const [leagueYear, setLeagueYear] = useState<number>(currentLeagueTimes.currentLeagueYear);
+    const [gameTime, setGameTime] = useState<string>(currentLeagueTimes.usualGameTime);
+    const [gameWeek, setGameWeek] = useState<number>(currentLeagueTimes.currentLeagueWeek);
+    const [gameDate, setGameDate] = useState<string>();
     const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
     const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
+    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
+    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
 
     const teamOptions = data?.team_details.map((team) => team.name);
 
@@ -37,9 +46,9 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                     team_1_name: awayTeam, 
                     team_2_name: homeTeam, 
                     league_year: leagueYear, 
-                    time: time, 
-                    week: week, 
-                    date: date
+                    time: gameTime + ':00', 
+                    week: gameWeek , 
+                    date: gameDate
                 }
             }
         )
@@ -63,6 +72,22 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
 
     const handleOpenHomeTeamSelector = () => {
         setOpenHomeTeamSelector(true);
+    };
+
+    const handleCloseWeekSelector = () => {
+        setOpenWeekSelector(false);
+    };
+
+    const handleOpenWeekSelector = () => {
+        setOpenWeekSelector(true);
+    };
+
+    const handleCloseYearSelector = () => {
+        setOpenYearSelector(false);
+    };
+
+    const handleOpenYearSelector = () => {
+        setOpenYearSelector(true);
     };
 
     const classes = useStyles();
@@ -118,9 +143,16 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                         <Typography>
                             Date
                         </Typography>
-                        <TextField
-                            onChange={(fieldValue) => setDate(fieldValue.target.value)}
-                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <div> 
+                                <KeyboardDatePicker
+                                    margin="normal"
+                                    format="yyyy-MM-dd"
+                                    value={gameDate}
+                                    onChange={(date) => setGameDate(format(date as Date, "yyyy-MM-dd"))}
+                                />
+                            </div>
+                        </MuiPickersUtilsProvider>
                     </DialogContent>
 
                     <DialogContent>
@@ -128,28 +160,52 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                             Time (CST)
                         </Typography>
                         <TextField
-                            onChange={(fieldValue) => setTime(fieldValue.target.value)}
+                            type="time"
+                            onChange={(fieldValue) => setGameTime(fieldValue.target.value)}
+                            inputProps={{
+                                step: 300,
+                            }}
                         />
                     </DialogContent>
                 </DialogContent>
                 
                 <DialogContent className={classes.inputRow}>
                     <DialogContent>
-                        <Typography>
-                            Week
-                        </Typography>
-                        <TextField
-                            onChange={(fieldValue) => setWeek(parseInt(fieldValue.target.value))}
-                        />
+                        <FormControl className={classes.teamSelectors}>
+                            <InputLabel htmlFor="week-id">Week</InputLabel>
+                            <Select
+                                value={gameWeek}
+                                labelId="week-id"
+                                onChange={(fieldValue) => setGameWeek(fieldValue.target.value as number)}
+                                onClose={handleCloseWeekSelector}
+                                onOpen={handleOpenWeekSelector}
+                            >
+                                {
+                                    timeSelections.leagueWeeks.map((week) => {
+                                        return <MenuItem value={week}>{week}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
                     </DialogContent>
 
                     <DialogContent>
-                        <Typography>
-                            League Year
-                        </Typography>
-                        <TextField
-                            onChange={(fieldValue) => setLeagueYear(parseInt(fieldValue.target.value))}
-                        />
+                        <FormControl className={classes.teamSelectors}>
+                            <InputLabel htmlFor="year-id">Year</InputLabel>
+                            <Select
+                                value={leagueYear}
+                                labelId="year-id"
+                                onChange={(fieldValue) => setLeagueYear(fieldValue.target.value as number)}
+                                onClose={handleCloseYearSelector}
+                                onOpen={handleOpenYearSelector}
+                            >
+                                {
+                                    timeSelections.leagueYears.map((year) => {
+                                        return <MenuItem value={year}>{year}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
                     </DialogContent>
                 </DialogContent>
 
