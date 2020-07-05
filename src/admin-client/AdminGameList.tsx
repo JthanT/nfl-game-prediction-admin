@@ -11,27 +11,19 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import { timeSelections, currentLeagueTimes } from '../utils/time';
 import AdminGameInsert from '../admin-client/AdminGameInsert';
 import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function AdminGameList() {
 
-    const currentWeek = 1;
-    const currentYear = 2020;
-    const years = ["2020", "2021"];
-    const weeks = [
-        "1", "2", "3", "4", "5", "6", "7", "8", 
-        "9", "10", "11", "12", "13", "14", "15", "16",
-        "17"
-    ];
-
     const { data, refetch } = useQuery(
         GAME_SCHEDULE_BY_YEAR_QUERY,
         {
             variables: {
-                leagueYear: currentYear,
-                leagueWeek: currentWeek,
+                leagueYear: currentLeagueTimes.currentLeagueYear,
+                leagueWeek: currentLeagueTimes.currentLeagueWeek,
             },
         }
     );
@@ -39,9 +31,9 @@ function AdminGameList() {
     const [openDetails, setOpenDetails] = useState(false);
     const [openGameInsert, setOpenGameInsert] = useState(false);
     const [id, setId] = useState<number>(0);
-    const [leagueYear, setLeagueYear] = useState<number>(currentYear);
+    const [leagueYear, setLeagueYear] = useState<number>(currentLeagueTimes.currentLeagueYear);
     const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
-    const [leagueWeek, setLeagueWeek] = useState<number>(currentWeek);
+    const [leagueWeek, setLeagueWeek] = useState<number>(currentLeagueTimes.currentLeagueWeek);
     const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
 
     const handleOpenDetails = (gameId: number) => {
@@ -199,7 +191,7 @@ function AdminGameList() {
                                     onOpen={handleOpenYearSelector}
                                 >
                                     {(
-                                        years.map((year) => {
+                                        timeSelections.leagueYears.map((year) => {
                                             return <MenuItem value={year}>{year}</MenuItem>
                                         })
                                     )}
@@ -218,7 +210,7 @@ function AdminGameList() {
                                     onOpen={handleOpenWeekSelector}
                                 >
                                     {(
-                                        weeks.map((week) => {
+                                        timeSelections.leagueWeeks.map((week) => {
                                             return <MenuItem value={week}>{week}</MenuItem>
                                         })
                                     )}
