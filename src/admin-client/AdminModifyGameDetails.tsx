@@ -11,6 +11,12 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_BY_ID_QUERY } from '../graphql/queries/game.queries';
 import { GAME_SCHEDULE_UPDATE_BY_ID } from '../graphql/mutations/game.mutations';
 import { GAME_SCHEDULE_DELETE_BY_ID } from '../graphql/mutations/game.mutations';
@@ -42,11 +48,13 @@ function AdminModifyGameDetails(
     const [awayTeam, setAwayTeam] = useState<string>();
     const [homeTeam, setHomeTeam] = useState<string>();
     const [leagueYear, setLeagueYear] = useState<number>();
-    const [time, setTime] = useState<string>();
-    const [week, setWeek] = useState<number>();
-    const [date, setDate] = useState<string>();
+    const [gameTime, setGameTime] = useState<string>();
+    const [gameWeek, setGameWeek] = useState<number>();
+    const [gameDate, setGameDate] = useState<Date>(new Date());
     const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
     const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
+    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
+    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
     const [openDeletionConfirmation, setOpenDeletionConfirmation] = useState<boolean>(false);
 
     const teamOptions = teamData?.data?.team_details.map((team) => team.name);
@@ -65,15 +73,15 @@ function AdminModifyGameDetails(
                     league_year: (!leagueYear || leagueYear == 0) ?
                         gameData?.data?.game_schedule[0].league_year :
                         leagueYear, 
-                    time: (!time || time === "") ?
+                    time: (!gameTime || gameTime === "") ?
                         gameData?.data?.game_schedule[0].time :
-                        time, 
-                    week: (!week || week == 0) ?
+                        gameTime + ':00', 
+                    week: (!gameWeek || gameWeek == 0) ?
                         gameData?.data?.game_schedule[0].week :
-                        week, 
-                    date: (!date || date === "") ?
+                        gameWeek, 
+                    date: !gameDate ?
                         gameData?.data?.game_schedule[0].date :
-                        date, 
+                        gameDate, 
                 }
             }
         )
@@ -117,6 +125,22 @@ function AdminModifyGameDetails(
         setOpenHomeTeamSelector(true);
     };
 
+    const handleCloseWeekSelector = () => {
+        setOpenWeekSelector(false);
+    };
+
+    const handleOpenWeekSelector = () => {
+        setOpenWeekSelector(true);
+    };
+
+    const handleCloseYearSelector = () => {
+        setOpenYearSelector(false);
+    };
+
+    const handleOpenYearSelector = () => {
+        setOpenYearSelector(true);
+    };
+
     const handleOpenGameDelete = () => {
         setOpenDeletionConfirmation(true);
     };
@@ -157,7 +181,7 @@ function AdminModifyGameDetails(
                         <FormControl className={classes.teamSelectors}>
                             <InputLabel htmlFor="away-team-id">Away Team</InputLabel>
                             <Select
-                                value={awayTeam}
+                                value={awayTeam ?? gameData?.data?.game_schedule[0].team_1_name ?? ''}
                                 labelId="away-team-id"
                                 onChange={(fieldValue) => setAwayTeam(fieldValue.target.value as string)}
                                 onClose={handleCloseAwayTeamSelector}
@@ -176,7 +200,7 @@ function AdminModifyGameDetails(
                         <FormControl className={classes.teamSelectors}>
                             <InputLabel htmlFor="home-team-id">Home Team</InputLabel>
                             <Select
-                                value={awayTeam}
+                                value={homeTeam ?? gameData?.data?.game_schedule[0].team_2_name ?? ''}
                                 labelId="home-team-id"
                                 onChange={(fieldValue) => setHomeTeam(fieldValue.target.value as string)}
                                 onClose={handleCloseHomeTeamSelector}
@@ -197,42 +221,72 @@ function AdminModifyGameDetails(
                         <Typography>
                             Date
                         </Typography>
-                        <TextField
-                            value={date ?? gameData?.data?.game_schedule[0].date}
-                            onChange={(fieldValue) => setDate(fieldValue.target.value ? fieldValue.target.value : "")}
-                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <div> 
+                                <KeyboardDatePicker
+                                    disableToolbar
+                                    margin="normal"
+                                    defaultValue={gameData?.data?.game_schedule[0].date}
+                                    format="yyyy-MM-dd"
+                                    value={gameDate}
+                                    onChange={(date) => setGameDate(date as Date)}
+                                />
+                            </div>
+                        </MuiPickersUtilsProvider>
                     </DialogContent>
                         
                     <DialogContent>
                         <Typography>
-                            Time
+                            Time (CST)
                         </Typography>
                         <TextField
-                            value={time ?? gameData?.data?.game_schedule[0].time}
-                            onChange={(fieldValue) => setTime(fieldValue.target.value ? fieldValue.target.value : "")}
+                            type="time"
+                            value={gameTime ?? gameData?.data?.game_schedule[0].time ?? ''}
+                            onChange={(fieldValue) => setGameTime(fieldValue.target.value)}
+                            inputProps={{
+                                step: 300,
+                            }}
                         />
                     </DialogContent>
                 </DialogContent>
                 
                 <DialogContent className={classes.inputRow}>
                     <DialogContent>
-                        <Typography>
-                            Week
-                        </Typography>
-                        <TextField
-                            value={week ?? gameData?.data?.game_schedule[0].week}
-                            onChange={(fieldValue) => setWeek(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                        />
+                        <FormControl className={classes.teamSelectors}>
+                            <InputLabel htmlFor="week-id">Week</InputLabel>
+                            <Select
+                                value={gameWeek ?? gameData?.data?.game_schedule[0].week ?? ''}
+                                labelId="week-id"
+                                onChange={(fieldValue) => setGameWeek(fieldValue.target.value as number)}
+                                onClose={handleCloseWeekSelector}
+                                onOpen={handleOpenWeekSelector}
+                            >
+                                {
+                                    timeSelections.leagueWeeks.map((week) => {
+                                        return <MenuItem value={week}>{week}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
                     </DialogContent>
 
                     <DialogContent>
-                        <Typography>
-                            Year
-                        </Typography>
-                        <TextField
-                            value={leagueYear ?? gameData?.data?.game_schedule[0].league_year}
-                            onChange={(fieldValue) => setLeagueYear(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                        />
+                        <FormControl className={classes.teamSelectors}>
+                            <InputLabel htmlFor="year-id">Year</InputLabel>
+                            <Select
+                                value={leagueYear ?? gameData?.data?.game_schedule[0].league_year ?? ''}
+                                labelId="year-id"
+                                onChange={(fieldValue) => setLeagueYear(fieldValue.target.value as number)}
+                                onClose={handleCloseYearSelector}
+                                onOpen={handleOpenYearSelector}
+                            >
+                                {
+                                    timeSelections.leagueYears.map((year) => {
+                                        return <MenuItem value={year}>{year}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </FormControl>
                     </DialogContent>
                 </DialogContent>
 

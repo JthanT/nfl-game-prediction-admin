@@ -10,12 +10,11 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import DateFnsUtils from '@date-io/date-fns';
-import format from 'date-fns/format';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
@@ -31,7 +30,7 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
     const [leagueYear, setLeagueYear] = useState<number>(currentLeagueTimes.currentLeagueYear);
     const [gameTime, setGameTime] = useState<string>(currentLeagueTimes.usualGameTime);
     const [gameWeek, setGameWeek] = useState<number>(currentLeagueTimes.currentLeagueWeek);
-    const [gameDate, setGameDate] = useState<string>();
+    const [gameDate, setGameDate] = useState<Date>(new Date());
     const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
     const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
     const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
@@ -146,10 +145,11 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <div> 
                                 <KeyboardDatePicker
+                                    disableToolbar
                                     margin="normal"
                                     format="yyyy-MM-dd"
                                     value={gameDate}
-                                    onChange={(date) => setGameDate(format(date as Date, "yyyy-MM-dd"))}
+                                    onChange={(date) => setGameDate(date as Date)}
                                 />
                             </div>
                         </MuiPickersUtilsProvider>
