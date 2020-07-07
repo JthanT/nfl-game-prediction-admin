@@ -132,7 +132,8 @@ function AdminGameList() {
                     refetchGames={() => refetch({
                         leagueYear: leagueYear,
                         leagueWeek: leagueWeek,
-                    })} 
+                    })}
+                    closeMenu={handleCloseGameInsert}
                 />
             </Dialog>
             <div className={classes.tableContent}>

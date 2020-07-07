@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -50,7 +50,7 @@ function AdminModifyGameDetails(
     const [leagueYear, setLeagueYear] = useState<number>();
     const [gameTime, setGameTime] = useState<string>();
     const [gameWeek, setGameWeek] = useState<number>();
-    const [gameDate, setGameDate] = useState<Date>(new Date());
+    const [gameDate, setGameDate] = useState<Date>();
     const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
     const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
     const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
@@ -58,7 +58,7 @@ function AdminModifyGameDetails(
     const [openDeletionConfirmation, setOpenDeletionConfirmation] = useState<boolean>(false);
 
     const teamOptions = teamData?.data?.team_details.map((team) => team.name);
-
+   
     const handleGameUpdate = () => {
         updateGameDetails(
             {
@@ -79,8 +79,8 @@ function AdminModifyGameDetails(
                     week: (!gameWeek || gameWeek == 0) ?
                         gameData?.data?.game_schedule[0].week :
                         gameWeek, 
-                    date: !gameDate ?
-                        gameData?.data?.game_schedule[0].date :
+                    date: !gameDate ? 
+                        new Date(gameData?.data?.game_schedule[0].date + 'CST') : 
                         gameDate, 
                 }
             }
@@ -226,9 +226,8 @@ function AdminModifyGameDetails(
                                 <KeyboardDatePicker
                                     disableToolbar
                                     margin="normal"
-                                    defaultValue={gameData?.data?.game_schedule[0].date}
                                     format="yyyy-MM-dd"
-                                    value={gameDate}
+                                    value={gameDate ?? new Date(gameData?.data?.game_schedule[0].date + 'CST')}
                                     onChange={(date) => setGameDate(date as Date)}
                                 />
                             </div>
