@@ -19,7 +19,7 @@ import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
-function AdminGameInsert(props: {refetchGames?: () => void}) {
+function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) {
 
     const { data } = useQuery(TEAM_DETAILS_QUERY);
 
@@ -54,6 +54,10 @@ function AdminGameInsert(props: {refetchGames?: () => void}) {
 
         if (props.refetchGames) {
             props.refetchGames()
+        };
+
+        if (props.closeMenu) {
+            props.closeMenu()
         };
     };
 
