@@ -4,14 +4,16 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-ro
 import { useAuth0 } from "./auth/react-auth0-spa";
 import TeamList from './admin-client/TeamList';
 import GameList from './admin-client/GameList';
-import ApolloClient from "apollo-client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  HttpLink
+} from '@apollo/client'
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Toolbar from '@material-ui/core/Toolbar';
 import { ApolloProvider } from "@apollo/react-hooks";
-import { HttpLink } from "apollo-link-http";
-import { InMemoryCache } from "apollo-cache-inmemory";
 
 function App({idToken}) {
 
