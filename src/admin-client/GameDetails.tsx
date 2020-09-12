@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
@@ -16,19 +16,19 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { timeSelections, currentLeagueTimes } from '../utils/time';
+import { timeSelections } from '../utils/time';
 import { GAME_SCHEDULE_BY_ID_QUERY } from '../graphql/queries/game.queries';
-import { GAME_SCHEDULE_UPDATE_BY_ID } from '../graphql/mutations/game.mutations';
+import { GAME_SCHEDULE_UPDATE_BY_ID, GAME_SCHEDULE_UPDATE_WINNER_BY_ID } from '../graphql/mutations/game.mutations';
 import { GAME_SCHEDULE_DELETE_BY_ID } from '../graphql/mutations/game.mutations';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
-function AdminModifyGameDetails(
+const ModifyGameDetails = (
     props: {
         gameId: number, 
         refetchGameDetails?: () => void, 
         closeDetailsMenu?: () => void,
     }
-) {
+) => {
 
     const teamData: { data } = useQuery(TEAM_DETAILS_QUERY);
     
@@ -42,50 +42,54 @@ function AdminModifyGameDetails(
     );
 
     const [updateGameDetails] = useMutation(GAME_SCHEDULE_UPDATE_BY_ID);
-
+    const [updateGameWinner] = useMutation(GAME_SCHEDULE_UPDATE_WINNER_BY_ID);
     const [deleteGameDetails] = useMutation(GAME_SCHEDULE_DELETE_BY_ID);
 
     const [awayTeam, setAwayTeam] = useState<string>();
     const [homeTeam, setHomeTeam] = useState<string>();
+    const [winningTeam, setWinningTeam] = useState<string>();
     const [leagueYear, setLeagueYear] = useState<number>();
     const [gameTime, setGameTime] = useState<string>();
     const [gameWeek, setGameWeek] = useState<number>();
     const [gameDate, setGameDate] = useState<Date>();
-    const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
-    const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
-    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
-    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
     const [openDeletionConfirmation, setOpenDeletionConfirmation] = useState<boolean>(false);
 
     const teamOptions = teamData?.data?.team_details.map((team) => team.name);
    
     const handleGameUpdate = () => {
-        updateGameDetails(
-            {
-                variables: {
-                    id: gameData?.data?.game_schedule[0].game_id,
-                    team_1_name: (!awayTeam || awayTeam === "") ?
-                        gameData?.data?.game_schedule[0].team_1_name :
-                        awayTeam, 
-                    team_2_name: (!homeTeam || homeTeam === "") ?
-                        gameData?.data?.game_schedule[0].team_2_name :
-                        homeTeam, 
-                    league_year: (!leagueYear || leagueYear == 0) ?
-                        gameData?.data?.game_schedule[0].league_year :
-                        leagueYear, 
-                    time: (!gameTime || gameTime === "") ?
-                        gameData?.data?.game_schedule[0].time :
-                        gameTime + ':00', 
-                    week: (!gameWeek || gameWeek == 0) ?
-                        gameData?.data?.game_schedule[0].week :
-                        gameWeek, 
-                    date: !gameDate ? 
-                        new Date(gameData?.data?.game_schedule[0].date + 'CST') : 
-                        gameDate, 
-                }
+        updateGameDetails({
+            variables: {
+                id: gameData?.data?.game_schedule[0].game_id,
+                team_1_name: (!awayTeam || awayTeam === "") ?
+                    gameData?.data?.game_schedule[0].team_1_name :
+                    awayTeam, 
+                team_2_name: (!homeTeam || homeTeam === "") ?
+                    gameData?.data?.game_schedule[0].team_2_name :
+                    homeTeam, 
+                league_year: (!leagueYear || leagueYear === 0) ?
+                    gameData?.data?.game_schedule[0].league_year :
+                    leagueYear, 
+                time: (!gameTime || gameTime === "") ?
+                    gameData?.data?.game_schedule[0].time :
+                    gameTime + ':00', 
+                week: (!gameWeek || gameWeek === 0) ?
+                    gameData?.data?.game_schedule[0].week :
+                    gameWeek, 
+                date: !gameDate ? 
+                    new Date(gameData?.data?.game_schedule[0].date + 'CST') : 
+                    gameDate, 
             }
-        )
-
+        });
+        
+        if (winningTeam) {
+            updateGameWinner({
+                variables: {
+                    id: props.gameId,
+                    team_name: winningTeam
+                }
+            })
+        };
+        
         if (props.refetchGameDetails) {
             props.refetchGameDetails()
         };
@@ -107,39 +111,7 @@ function AdminModifyGameDetails(
         if (props.closeDetailsMenu) {
             props.closeDetailsMenu()
         };
-    };
-
-    const handleCloseAwayTeamSelector = () => {
-        setOpenAwayTeamSelector(false);
-    };
-    
-    const handleOpenAwayTeamSelector = () => {
-        setOpenAwayTeamSelector(true);
-    };
-
-    const handleCloseHomeTeamSelector = () => {
-        setOpenHomeTeamSelector(false);
-    };
-
-    const handleOpenHomeTeamSelector = () => {
-        setOpenHomeTeamSelector(true);
-    };
-
-    const handleCloseWeekSelector = () => {
-        setOpenWeekSelector(false);
-    };
-
-    const handleOpenWeekSelector = () => {
-        setOpenWeekSelector(true);
-    };
-
-    const handleCloseYearSelector = () => {
-        setOpenYearSelector(false);
-    };
-
-    const handleOpenYearSelector = () => {
-        setOpenYearSelector(true);
-    };
+    }; 
 
     const handleOpenGameDelete = () => {
         setOpenDeletionConfirmation(true);
@@ -184,8 +156,6 @@ function AdminModifyGameDetails(
                                 value={awayTeam ?? gameData?.data?.game_schedule[0].team_1_name ?? ''}
                                 labelId="away-team-id"
                                 onChange={(fieldValue) => setAwayTeam(fieldValue.target.value as string)}
-                                onClose={handleCloseAwayTeamSelector}
-                                onOpen={handleOpenAwayTeamSelector}
                             >
                                 {teamData?.data && (
                                     teamOptions.map((name) => {
@@ -203,8 +173,6 @@ function AdminModifyGameDetails(
                                 value={homeTeam ?? gameData?.data?.game_schedule[0].team_2_name ?? ''}
                                 labelId="home-team-id"
                                 onChange={(fieldValue) => setHomeTeam(fieldValue.target.value as string)}
-                                onClose={handleCloseHomeTeamSelector}
-                                onOpen={handleOpenHomeTeamSelector}
                             >
                                 {teamData?.data && (
                                     teamOptions.map((name) => {
@@ -257,8 +225,6 @@ function AdminModifyGameDetails(
                                 value={gameWeek ?? gameData?.data?.game_schedule[0].week ?? ''}
                                 labelId="week-id"
                                 onChange={(fieldValue) => setGameWeek(fieldValue.target.value as number)}
-                                onClose={handleCloseWeekSelector}
-                                onOpen={handleOpenWeekSelector}
                             >
                                 {
                                     timeSelections.leagueWeeks.map((week) => {
@@ -276,14 +242,34 @@ function AdminModifyGameDetails(
                                 value={leagueYear ?? gameData?.data?.game_schedule[0].league_year ?? ''}
                                 labelId="year-id"
                                 onChange={(fieldValue) => setLeagueYear(fieldValue.target.value as number)}
-                                onClose={handleCloseYearSelector}
-                                onOpen={handleOpenYearSelector}
                             >
                                 {
                                     timeSelections.leagueYears.map((year) => {
                                         return <MenuItem value={year}>{year}</MenuItem>
                                     })
                                 }
+                            </Select>
+                        </FormControl>
+                    </DialogContent>
+
+                    <DialogContent>
+                        <FormControl className={classes.teamSelectors}>
+                            <InputLabel htmlFor="winner-team-id">Winning Team</InputLabel>
+                            <Select
+                                value={winningTeam ?? gameData?.data?.game_schedule[0].winning_team ?? ''}
+                                labelId="winner-team-id"
+                                onChange={(fieldValue) => setWinningTeam(fieldValue.target.value as string)}
+                            >
+                                {teamData?.data && (
+                                    teamOptions
+                                        .filter((name) => (
+                                            name === gameData?.data?.game_schedule[0].team_1_name ||
+                                            name === gameData?.data?.game_schedule[0].team_2_name )
+                                        )
+                                        .map((name) => {
+                                            return <MenuItem value={name}>{name}</MenuItem>
+                                        })
+                                )}
                             </Select>
                         </FormControl>
                     </DialogContent>
@@ -302,7 +288,7 @@ function AdminModifyGameDetails(
     );
 }
 
-export default AdminModifyGameDetails;
+export default ModifyGameDetails;
 
 const useStyles = makeStyles({
     inputRow: {

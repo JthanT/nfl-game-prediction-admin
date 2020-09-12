@@ -12,11 +12,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
-import AdminGameInsert from '../admin-client/AdminGameInsert';
-import AdminModifyGameDetails from '../admin-client/AdminModifyGameDetails';
+import GameInsert from './GameInsert';
+import ModifyGameDetails from './GameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
-function AdminGameList() {
+function GameList() {
 
     const { data, refetch } = useQuery(
         GAME_SCHEDULE_BY_YEAR_QUERY,
@@ -32,9 +32,7 @@ function AdminGameList() {
     const [openGameInsert, setOpenGameInsert] = useState(false);
     const [id, setId] = useState<number>(0);
     const [leagueYear, setLeagueYear] = useState<number>(currentLeagueTimes.currentLeagueYear);
-    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
     const [leagueWeek, setLeagueWeek] = useState<number>(currentLeagueTimes.currentLeagueWeek);
-    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
 
     const handleOpenDetails = (gameId: number) => {
         setId(gameId);
@@ -53,28 +51,12 @@ function AdminGameList() {
         setOpenGameInsert(false);
     };
 
-    const handleOpenYearSelector = () => {
-        setOpenYearSelector(true);
-    };
-
-    const handleCloseYearSelector = () => {
-        setOpenYearSelector(false);
-    };
-
     const handleLeagueYearSelect = (year: number) => {
         setLeagueYear(year);
         refetch({
             leagueYear: year,
             leagueWeek: 1
         });
-    };
-
-    const handleOpenWeekSelector = () => {
-        setOpenWeekSelector(true);
-    };
-
-    const handleCloseWeekSelector = () => {
-        setOpenWeekSelector(false);
     };
 
     const handleWeekSelect = (week: number) => {
@@ -104,7 +86,7 @@ function AdminGameList() {
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
-                <AdminModifyGameDetails 
+                <ModifyGameDetails 
                     gameId={id} 
                     refetchGameDetails={() => refetch({
                         leagueYear: leagueYear,
@@ -128,7 +110,7 @@ function AdminGameList() {
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
-                <AdminGameInsert 
+                <GameInsert 
                     refetchGames={() => refetch({
                         leagueYear: leagueYear,
                         leagueWeek: leagueWeek,
@@ -188,8 +170,6 @@ function AdminGameList() {
                                         (fieldValue) => 
                                             handleLeagueYearSelect(fieldValue.target.value as number)
                                     }
-                                    onClose={handleCloseYearSelector}
-                                    onOpen={handleOpenYearSelector}
                                 >
                                     {(
                                         timeSelections.leagueYears.map((year) => {
@@ -207,8 +187,6 @@ function AdminGameList() {
                                         (fieldValue) => 
                                             handleWeekSelect(fieldValue.target.value as number)
                                     }
-                                    onClose={handleCloseWeekSelector}
-                                    onOpen={handleOpenWeekSelector}
                                 >
                                     {(
                                         timeSelections.leagueWeeks.map((week) => {
@@ -235,7 +213,7 @@ function AdminGameList() {
     );
 }
 
-export default AdminGameList;
+export default GameList;
 
 const useStyles = makeStyles({
     tableContent: {

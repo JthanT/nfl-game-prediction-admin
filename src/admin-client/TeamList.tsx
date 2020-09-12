@@ -6,10 +6,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import AdminTeamDetails from '../admin-client/AdminTeamDetails';
+import TeamDetails from './TeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
-function AdminTeamList() {
+function TeamList() {
 
     const { data, refetch } = useQuery(TEAM_DETAILS_QUERY);
 
@@ -35,7 +35,7 @@ function AdminTeamList() {
                         <CloseIcon/>
                     </IconButton>
                 </DialogActions>
-                <AdminTeamDetails teamId={id} refetchTeamDetails={refetch} />
+                <TeamDetails teamId={id} refetchTeamDetails={refetch} />
             </Dialog>
             <div className={classes.tableContent}>
                 <MUIDataTable
@@ -86,7 +86,7 @@ function AdminTeamList() {
     );
 }
 
-export default AdminTeamList;
+export default TeamList;
 
 const useStyles = makeStyles({
     tableContent: {
