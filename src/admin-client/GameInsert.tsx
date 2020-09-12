@@ -19,7 +19,9 @@ import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 
-function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) {
+function GameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) {
+
+    const classes = useStyles();
 
     const { data } = useQuery(TEAM_DETAILS_QUERY);
 
@@ -31,10 +33,6 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
     const [gameTime, setGameTime] = useState<string>(currentLeagueTimes.usualGameTime);
     const [gameWeek, setGameWeek] = useState<number>(currentLeagueTimes.currentLeagueWeek);
     const [gameDate, setGameDate] = useState<Date>(new Date());
-    const [openAwayTeamSelector, setOpenAwayTeamSelector] = useState<boolean>(false);
-    const [openHomeTeamSelector, setOpenHomeTeamSelector] = useState<boolean>(false);
-    const [openWeekSelector, setOpenWeekSelector] = useState<boolean>(false);
-    const [openYearSelector, setOpenYearSelector] = useState<boolean>(false);
 
     const teamOptions = data?.team_details.map((team) => team.name);
 
@@ -61,40 +59,6 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
         };
     };
 
-    const handleCloseAwayTeamSelector = () => {
-        setOpenAwayTeamSelector(false);
-    };
-    
-    const handleOpenAwayTeamSelector = () => {
-        setOpenAwayTeamSelector(true);
-    };
-
-    const handleCloseHomeTeamSelector = () => {
-        setOpenHomeTeamSelector(false);
-    };
-
-    const handleOpenHomeTeamSelector = () => {
-        setOpenHomeTeamSelector(true);
-    };
-
-    const handleCloseWeekSelector = () => {
-        setOpenWeekSelector(false);
-    };
-
-    const handleOpenWeekSelector = () => {
-        setOpenWeekSelector(true);
-    };
-
-    const handleCloseYearSelector = () => {
-        setOpenYearSelector(false);
-    };
-
-    const handleOpenYearSelector = () => {
-        setOpenYearSelector(true);
-    };
-
-    const classes = useStyles();
-
     return (
         <div>
             <DialogTitle>
@@ -109,8 +73,6 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
                                 value={awayTeam}
                                 labelId="away-team-id"
                                 onChange={(fieldValue) => setAwayTeam(fieldValue.target.value as string)}
-                                onClose={handleCloseAwayTeamSelector}
-                                onOpen={handleOpenAwayTeamSelector}
                             >
                                 {data && (
                                     teamOptions.map((name) => {
@@ -128,8 +90,6 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
                                 value={homeTeam}
                                 labelId="home-team-id"
                                 onChange={(fieldValue) => setHomeTeam(fieldValue.target.value as string)}
-                                onClose={handleCloseHomeTeamSelector}
-                                onOpen={handleOpenHomeTeamSelector}
                             >
                                 {data && (
                                     teamOptions.map((name) => {
@@ -181,8 +141,6 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
                                 value={gameWeek}
                                 labelId="week-id"
                                 onChange={(fieldValue) => setGameWeek(fieldValue.target.value as number)}
-                                onClose={handleCloseWeekSelector}
-                                onOpen={handleOpenWeekSelector}
                             >
                                 {
                                     timeSelections.leagueWeeks.map((week) => {
@@ -200,8 +158,6 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
                                 value={leagueYear}
                                 labelId="year-id"
                                 onChange={(fieldValue) => setLeagueYear(fieldValue.target.value as number)}
-                                onClose={handleCloseYearSelector}
-                                onOpen={handleOpenYearSelector}
                             >
                                 {
                                     timeSelections.leagueYears.map((year) => {
@@ -223,7 +179,7 @@ function AdminGameInsert(props: {refetchGames?: () => void, closeMenu?: () => vo
     );
 }
 
-export default AdminGameInsert;
+export default GameInsert;
 
 const useStyles = makeStyles({
     inputRow: {

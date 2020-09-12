@@ -49,6 +49,14 @@ export const GAME_SCHEDULE_UPDATE_BY_ID = gql`
     }
 `
 
+export const GAME_SCHEDULE_UPDATE_WINNER_BY_ID = gql`
+    mutation GameScheduleUpdateWinnerById($id: Int!, $team_name: String) {
+        update_game_schedule(where: {game_id: {_eq: $id}}, _set: {winning_team: $team_name}) {
+            affected_rows
+        }
+    }
+`
+
 export const GAME_SCHEDULE_DELETE_BY_ID = gql`
     mutation GameScheduleDeleteById($id: Int!) {
         delete_game_schedule(where: {game_id: {_eq: $id}}) {

@@ -2,8 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { useAuth0 } from "./auth/react-auth0-spa";
-import AdminTeamList from './admin-client/AdminTeamList';
-import AdminGameList from './admin-client/AdminGameList';
+import TeamList from './admin-client/TeamList';
+import GameList from './admin-client/GameList';
 import ApolloClient from "apollo-client";
 import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
@@ -46,15 +46,15 @@ function App({idToken}) {
               <Link to={"/admin-game-list"} className={classes.navBarSectionTitles}>
                 Schedule
               </Link>
-              <Button onClick={() => logout}>
+              <Button onClick={() => logout()}>
                 Logout
               </Button>
             </Toolbar>
           </AppBar>
 
           <Switch>
-            <Route exact path='/' component={AdminTeamList} />
-            <Route path='/admin-game-list' component={AdminGameList} />
+            <Route exact path='/' component={TeamList} />
+            <Route path='/admin-game-list' component={GameList} />
             <Route render={() => <Redirect to={{pathname: "/"}} />} />
           </Switch>
         </Router>

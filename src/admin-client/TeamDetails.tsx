@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.queries';
 import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/mutations/team.mutations';
 
-function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
+function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
 
     const { data } = useQuery(
         TEAM_DETAILS_BY_ID_QUERY,
@@ -41,20 +41,20 @@ function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => voi
             {
                 variables: {
                     id: data?.team_details[0].team_id, 
-                    coaching_factor: (!coachingFactor || coachingFactor == 0) ? 
+                    coaching_factor: (!coachingFactor || coachingFactor === 0) ? 
                         data?.team_details[0].coaching_factor : 
                         coachingFactor, 
-                    defence_ranking: (!defenceRank || defenceRank == 0) ? 
+                    defence_ranking: (!defenceRank || defenceRank === 0) ? 
                         data?.team_details[0].defence_ranking :
                         defenceRank,
                     injury_severity: injurySeverity ?? data?.team_details[0].injury_severity, 
-                    offence_ranking: (!offenceRank || offenceRank == 0) ? 
+                    offence_ranking: (!offenceRank || offenceRank === 0) ? 
                         data?.team_details[0].offence_ranking :
                         offenceRank, 
-                    special_teams_ranking: (!specialTeamsRank || specialTeamsRank == 0) ? 
+                    special_teams_ranking: (!specialTeamsRank || specialTeamsRank === 0) ? 
                         data?.team_details[0].special_teams_ranking :
                         specialTeamsRank, 
-                    talent_factor: (!talentFactor || talentFactor == 0) ? 
+                    talent_factor: (!talentFactor || talentFactor === 0) ? 
                         data?.team_details[0].talent_factor :
                         talentFactor
                 }
@@ -148,7 +148,7 @@ function AdminTeamDetails(props: {teamId: number, refetchTeamDetails?: () => voi
     );
 }
 
-export default AdminTeamDetails;
+export default TeamDetails;
 
 const useStyles = makeStyles({
     inputRow: {

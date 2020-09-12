@@ -1,5 +1,3 @@
-import React from 'react';
-
 const outcomeConfidenceCategories = {
     close: "Close Win",
     convincing: "Convincing Win",
