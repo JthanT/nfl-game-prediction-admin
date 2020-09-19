@@ -7,9 +7,9 @@ import {
     IconButton, 
     Button, 
     Select, 
-    InputLabel, 
     MenuItem, 
-    FormControl 
+    FormControl, 
+    Typography 
 } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
 import { Close } from '@material-ui/icons';
@@ -59,6 +59,8 @@ function GameList() {
         }
     );
 
+    const classes = useStyles();
+
     const [openDetails, setOpenDetails] = useState(false);
     const [openGameInsert, setOpenGameInsert] = useState(false);
     const [id, setId] = useState<number>(0);
@@ -97,8 +99,6 @@ function GameList() {
             leagueWeek: week,
         });
     };
-
-    const classes = useStyles();
 
     return (
         <div>
@@ -173,11 +173,15 @@ function GameList() {
                             name: 'predicted_winner',
                         },
                         {
+                            label: 'Winner',
+                            name: 'winning_team',
+                        },
+                        {
                             label: 'Date',
                             name: 'date',
                             options: {
                                 customBodyRender: (value, tableMeta) => {
-                                    const timeStamp = value + 'T' + tableMeta.rowData[5];
+                                    const timeStamp = value + 'T' + tableMeta.rowData[6];
                                     return format(new Date(timeStamp), 'MMM d');
                                 }
                             }
@@ -187,7 +191,7 @@ function GameList() {
                             name: 'time',
                             options: {
                                 customBodyRender: (value, tableMeta) => {
-                                    const timeStamp = tableMeta.rowData[4] + 'T' + value;
+                                    const timeStamp = tableMeta.rowData[5] + 'T' + value;
                                     return format(new Date(timeStamp), 'h:mm a');
                                 }
                             }
@@ -205,10 +209,9 @@ function GameList() {
                                 </Button>
                             </div>
                             <FormControl className={classes.timeSelector}>
-                                <InputLabel htmlFor="year-id">League Year</InputLabel>
+                                <Typography>League Year</Typography>
                                 <Select
                                     value={leagueYear}
-                                    labelId="year-id"
                                     onChange={
                                         (fieldValue) => 
                                             handleLeagueYearSelect(fieldValue.target.value as number)
@@ -222,10 +225,9 @@ function GameList() {
                                 </Select>
                             </FormControl>
                             <FormControl className={classes.timeSelector}>
-                                <InputLabel htmlFor="week-id">Week</InputLabel>
+                                <Typography>Week</Typography>
                                 <Select
                                     value={leagueWeek}
-                                    labelId="week-id"
                                     onChange={
                                         (fieldValue) => 
                                             handleWeekSelect(fieldValue.target.value as number)

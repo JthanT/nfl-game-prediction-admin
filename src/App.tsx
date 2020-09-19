@@ -8,10 +8,28 @@ import {
   ApolloClient,
   InMemoryCache,
   HttpLink
-} from '@apollo/client'
+} from '@apollo/client';
 import { useAuth0 } from "@auth0/auth0-react";
 import { AppBar, Typography, Button, Toolbar } from '@material-ui/core';
 import { ApolloProvider } from "@apollo/react-hooks";
+
+const useStyles = makeStyles({
+  root: {
+    flexGrow: 1,
+    backgroundColor: '#dae4f2',
+  },
+  navBarTitle: {
+    flexGrow: 1,
+  },
+  navBarSectionTitles: {
+    flexGrow: 1,
+    textDecoration: 'none',
+    color: "white",
+  },
+  navBar: {
+    backgroundColor: '#1a468a',
+  }
+});
 
 function App() {
 
@@ -70,7 +88,6 @@ function App() {
               </Button>
             </Toolbar>
           </AppBar>
-
           <Switch>
             <Route exact path='/' component={TeamList} />
             <Route path='/admin-game-list' component={GameList} />
@@ -83,21 +100,3 @@ function App() {
 }
 
 export default App;
-
-const useStyles = makeStyles({
-  root: {
-    flexGrow: 1,
-    backgroundColor: '#dae4f2',
-  },
-  navBarTitle: {
-    flexGrow: 1,
-  },
-  navBarSectionTitles: {
-    flexGrow: 1,
-    textDecoration: 'none',
-    color: "white",
-  },
-  navBar: {
-    backgroundColor: '#1a468a',
-  }
-});
