@@ -146,14 +146,21 @@ function GameList() {
                             label: 'Date',
                             name: 'date',
                             options: {
-                                customBodyRender: (value) => {
-                                    return format(new Date(value), 'MMM d')
+                                customBodyRender: (value, tableMeta) => {
+                                    const timeStamp = value + 'T' + tableMeta.rowData[5];
+                                    return format(new Date(timeStamp), 'MMM d');
                                 }
                             }
                         },
                         {
                             label: 'Time (CST)',
                             name: 'time',
+                            options: {
+                                customBodyRender: (value, tableMeta) => {
+                                    const timeStamp = tableMeta.rowData[4] + 'T' + value;
+                                    return format(new Date(timeStamp), 'h:mm a');
+                                }
+                            }
                         },
                     ]}
                     title={(

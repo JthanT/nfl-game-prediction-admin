@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { makeStyles } from '@material-ui/core/styles';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { makeStyles, DialogContent, DialogTitle, Typography, TextField, Button } from '@material-ui/core';
 import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.queries';
 import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/mutations/team.mutations';
+
+const useStyles = makeStyles({
+    inputRow: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        paddingTop: '10px',
+        paddingBottom: '40px'
+    },
+    updateButton: {
+        textTransform: 'none',
+    },
+    buttonRow: {
+        display: 'flex', 
+        justifyContent: 'flex-end',
+    },
+});
 
 function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
 
@@ -28,6 +40,8 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
             },
         }
     );
+
+    const classes = useStyles();
 
     const [offenceRank, setOffenceRank] = useState<number>();
     const [defenceRank, setDefenceRank] = useState<number>();
@@ -58,16 +72,14 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
         };
     };
 
-    const classes = useStyles();
-
     return (
         <div>
             <DialogTitle>
                 Edit Team Data: {data?.team_details[0].name}
             </DialogTitle>
             <DialogContent dividers>
-                <DialogContent className={classes.inputRow}>    
-                    <DialogContent>
+                <div className={classes.inputRow}>    
+                    <div>
                         <Typography>
                             Offence Rank
                         </Typography>
@@ -75,9 +87,8 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                             value={offenceRank ?? data?.team_details[0].offence_ranking}
                             onChange={(fieldValue) => setOffenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                         />
-                    </DialogContent>
-
-                    <DialogContent>
+                    </div>
+                    <div>
                         <Typography>
                             Defence Rank
                         </Typography>
@@ -85,9 +96,8 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                             value={defenceRank ?? data?.team_details[0].defence_ranking}
                             onChange={(fieldValue) => setDefenceRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                         />
-                    </DialogContent>
-
-                    <DialogContent>
+                    </div>
+                    <div>
                         <Typography>
                             Special Teams Rank
                         </Typography>
@@ -95,11 +105,8 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                             value={specialTeamsRank ?? data?.team_details[0].special_teams_ranking}
                             onChange={(fieldValue) => setSpecialTeamsRank(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                         />
-                    </DialogContent>
-                </DialogContent>
-
-                <DialogContent className={classes.inputRow}>            
-                    <DialogContent>
+                    </div>
+                    <div>
                         <Typography>
                             Injury Severity
                         </Typography>
@@ -107,14 +114,13 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                             value={injurySeverity ?? data?.team_details[0].injury_severity}
                             onChange={(fieldValue) => setInjurySeverity(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                         />
-                    </DialogContent>
-                </DialogContent>
-
-                <DialogContent className={classes.buttonRow}>
+                    </div>
+                </div>
+                <div className={classes.buttonRow}>
                     <Button onClick={handleUpdate} variant="outlined" className={classes.updateButton}>
                         Update
                     </Button>
-                </DialogContent>
+                </div>
             </DialogContent>
         </div>
     );
@@ -122,18 +128,4 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
 
 export default TeamDetails;
 
-const useStyles = makeStyles({
-    inputRow: {
-        display: 'flex',
-    },
-    teamSelectors: {
-        display: 'flex',
-    },
-    updateButton: {
-        textTransform: 'none',
-    },
-    buttonRow: {
-        display: 'flex', 
-        justifyContent: 'flex-end',
-    },
-});
+
