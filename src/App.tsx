@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
-import { useAuth0 } from "./auth/react-auth0-spa";
+import { AUTH_CONFIG } from './auth/auth-config';
 import TeamList from './admin-client/TeamList';
 import GameList from './admin-client/GameList';
 import {
@@ -9,18 +9,22 @@ import {
   InMemoryCache,
   HttpLink
 } from '@apollo/client'
-import AppBar from '@material-ui/core/AppBar';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import Toolbar from '@material-ui/core/Toolbar';
+import { useAuth0 } from "@auth0/auth0-react";
+import { AppBar, Typography, Button, Toolbar } from '@material-ui/core';
 import { ApolloProvider } from "@apollo/react-hooks";
 
-function App({idToken}) {
+function App() {
+
+  const { logout, loginWithRedirect, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  
+  const token = localStorage.getItem('id_token');
+
+  const classes = useStyles();
 
   const httpLink = new HttpLink({
     uri: "https://nfl-game-prediction.herokuapp.com/v1/graphql",
     headers: {
-      'Authorization': `Bearer ${idToken}`
+      'Authorization': `Bearer ${token}`
     }
   });
 
@@ -29,9 +33,22 @@ function App({idToken}) {
     cache: new InMemoryCache(),
   });
 
-  const { logout } = useAuth0();
-
-  const classes = useStyles();
+  useEffect(() => {
+    const getUserMetadata = async () => {
+      try {
+        await getAccessTokenSilently({
+          audience: AUTH_CONFIG.audience,
+        });
+        const idToken = await getIdTokenClaims();
+        localStorage.setItem('id_token', idToken.__raw);
+      } catch (e) {
+        localStorage.removeItem('id_token');
+        loginWithRedirect();
+      }
+    };
+  
+    getUserMetadata();
+  });
 
   return (
     <ApolloProvider client={client}>
