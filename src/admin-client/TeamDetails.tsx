@@ -32,18 +32,13 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
     const [offenceRank, setOffenceRank] = useState<number>();
     const [defenceRank, setDefenceRank] = useState<number>();
     const [specialTeamsRank, setSpecialTeamsRank] = useState<number>();
-    const [coachingFactor, setCoachingFactor] = useState<number>();
     const [injurySeverity, setInjurySeverity] = useState<number>();
-    const [talentFactor, setTalentFactor] = useState<number>();
 
     const handleUpdate = () => {
         updateTeamDetails(
             {
                 variables: {
-                    id: data?.team_details[0].team_id, 
-                    coaching_factor: (!coachingFactor || coachingFactor === 0) ? 
-                        data?.team_details[0].coaching_factor : 
-                        coachingFactor, 
+                    id: data?.team_details[0].team_id,
                     defence_ranking: (!defenceRank || defenceRank === 0) ? 
                         data?.team_details[0].defence_ranking :
                         defenceRank,
@@ -53,10 +48,7 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                         offenceRank, 
                     special_teams_ranking: (!specialTeamsRank || specialTeamsRank === 0) ? 
                         data?.team_details[0].special_teams_ranking :
-                        specialTeamsRank, 
-                    talent_factor: (!talentFactor || talentFactor === 0) ? 
-                        data?.team_details[0].talent_factor :
-                        talentFactor
+                        specialTeamsRank,
                 }
             }
         )
@@ -106,17 +98,7 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                     </DialogContent>
                 </DialogContent>
 
-                <DialogContent className={classes.inputRow}>
-                    <DialogContent>
-                        <Typography>
-                            Coaching Factor
-                        </Typography>
-                        <TextField
-                            value={coachingFactor ?? data?.team_details[0].coaching_factor}
-                            onChange={(fieldValue) => setCoachingFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                        />
-                    </DialogContent>
-                    
+                <DialogContent className={classes.inputRow}>            
                     <DialogContent>
                         <Typography>
                             Injury Severity
@@ -124,16 +106,6 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                         <TextField
                             value={injurySeverity ?? data?.team_details[0].injury_severity}
                             onChange={(fieldValue) => setInjurySeverity(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
-                        />
-                    </DialogContent>
-
-                    <DialogContent>
-                        <Typography>
-                            Talent Factor
-                        </Typography>
-                        <TextField
-                            value={talentFactor ?? data?.team_details[0].talent_factor}
-                            onChange={(fieldValue) => setTalentFactor(fieldValue.target.value ? parseInt(fieldValue.target.value) : 0)}
                         />
                     </DialogContent>
                 </DialogContent>
