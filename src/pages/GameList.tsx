@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import { format } from 'date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import GameInsert from './GameInsert';
-import ModifyGameDetails from './GameDetails';
+import ModifyGameDetails from './ModifyGameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
 
 function GameList() {
@@ -76,7 +76,7 @@ function GameList() {
                 onClose={handleCloseDetails} 
                 open={openDetails} 
                 fullWidth={true} 
-                maxWidth={'lg'}
+                maxWidth={'sm'}
             >
                 <DialogActions>
                     <IconButton 
@@ -100,7 +100,7 @@ function GameList() {
                 onClose={handleCloseGameInsert} 
                 open={openGameInsert} 
                 fullWidth={true} 
-                maxWidth={'lg'}
+                maxWidth={'sm'}
             >
                 <DialogActions>
                     <IconButton 
@@ -234,7 +234,7 @@ const useStyles = makeStyles({
     },
     closeDialogButton: {
         position: 'absolute',
-        left: '95%',
+        left: '94%',
         top: '2%',
         backgroundColor: 'lightgray',
         color: 'gray',

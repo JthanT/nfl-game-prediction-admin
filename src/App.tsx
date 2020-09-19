@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
 import { AUTH_CONFIG } from './auth/auth-config';
-import TeamList from './admin-client/TeamList';
-import GameList from './admin-client/GameList';
+import TeamList from './pages/TeamList';
+import GameList from './pages/GameList';
 import {
   ApolloClient,
   InMemoryCache,

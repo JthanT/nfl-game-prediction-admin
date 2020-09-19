@@ -12,7 +12,7 @@ const useStyles = makeStyles({
     },
     closeDialogButton: {
         position: 'absolute',
-        left: '95%',
+        left: '94%',
         top: '2%',
         backgroundColor: 'lightgray',
         color: 'gray',
@@ -42,7 +42,7 @@ function TeamList() {
 
     return (
         <div>
-            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'md'}>
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'sm'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
                         <Close />
