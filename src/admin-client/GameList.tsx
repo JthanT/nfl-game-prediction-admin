@@ -11,6 +11,7 @@ import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import { format } from 'date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import GameInsert from './GameInsert';
 import ModifyGameDetails from './GameDetails';
@@ -144,6 +145,11 @@ function GameList() {
                         {
                             label: 'Date',
                             name: 'date',
+                            options: {
+                                customBodyRender: (value) => {
+                                    return format(new Date(value), 'MMM d')
+                                }
+                            }
                         },
                         {
                             label: 'Time (CST)',
