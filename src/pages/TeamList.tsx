@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { makeStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
+import { IconButton, DialogActions, Dialog, makeStyles } from '@material-ui/core';
+import { Close } from '@material-ui/icons';
 import TeamDetails from './TeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
+
+const useStyles = makeStyles({
+    tableContent: {
+        padding: '10px',
+    },
+    closeDialogButton: {
+        position: 'absolute',
+        left: '94%',
+        top: '2%',
+        backgroundColor: 'lightgray',
+        color: 'gray',
+    },
+    teamSelectors: {
+        display: 'flex',
+    },
+});
 
 function TeamList() {
 
     const { data, refetch } = useQuery(TEAM_DETAILS_QUERY);
+
+    const classes = useStyles();
 
     const [open, setOpen] = useState(false);
     const [id, setId] = useState<number>(0);
@@ -25,14 +40,12 @@ function TeamList() {
         setOpen(false);
     };
 
-    const classes = useStyles();
-
     return (
         <div>
-            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'md'}>
+            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'sm'}>
                 <DialogActions>
                     <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
-                        <CloseIcon/>
+                        <Close />
                     </IconButton>
                 </DialogActions>
                 <TeamDetails teamId={id} refetchTeamDetails={refetch} />
@@ -65,6 +78,10 @@ function TeamList() {
                             name: 'special_teams_ranking',
                         },
                         {
+                            label: 'Injury Severity',
+                            name: 'injury_severity'
+                        },
+                        {
                             label: 'Team Grade',
                             name: 'grade',
                         },
@@ -87,19 +104,3 @@ function TeamList() {
 }
 
 export default TeamList;
-
-const useStyles = makeStyles({
-    tableContent: {
-        padding: '10px',
-    },
-    closeDialogButton: {
-        position: 'absolute',
-        left: '95%',
-        top: '2%',
-        backgroundColor: 'lightgray',
-        color: 'gray',
-    },
-    teamSelectors: {
-        display: 'flex',
-    },
-});

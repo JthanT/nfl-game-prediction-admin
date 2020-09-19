@@ -1,21 +1,51 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { makeStyles } from '@material-ui/core/styles';
+import { 
+    makeStyles, 
+    Dialog, 
+    DialogActions, 
+    IconButton, 
+    Button, 
+    Select, 
+    InputLabel, 
+    MenuItem, 
+    FormControl 
+} from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import IconButton from '@material-ui/core/IconButton';
-import CloseIcon from '@material-ui/icons/Close';
-import Button from '@material-ui/core/Button';
-import Select from '@material-ui/core/Select';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
+import { Close } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import GameInsert from './GameInsert';
-import ModifyGameDetails from './GameDetails';
+import ModifyGameDetails from './ModifyGameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
+
+const useStyles = makeStyles({
+    tableContent: {
+        padding: '10px',
+    },
+    closeDialogButton: {
+        position: 'absolute',
+        left: '94%',
+        top: '2%',
+        backgroundColor: 'lightgray',
+        color: 'gray',
+    },
+    button: {
+        textTransform: 'none',
+    },
+    selectors: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    addGameButton: {
+        paddingRight: '10px',
+    },
+    timeSelector: {
+        display: 'flex',
+        width: '100px',
+        paddingRight: '20px',
+    },
+});
 
 function GameList() {
 
@@ -76,7 +106,7 @@ function GameList() {
                 onClose={handleCloseDetails} 
                 open={openDetails} 
                 fullWidth={true} 
-                maxWidth={'lg'}
+                maxWidth={'sm'}
             >
                 <DialogActions>
                     <IconButton 
@@ -84,7 +114,7 @@ function GameList() {
                         onClick={handleCloseDetails} 
                         className={classes.closeDialogButton}
                     >
-                        <CloseIcon/>
+                        <Close />
                     </IconButton>
                 </DialogActions>
                 <ModifyGameDetails 
@@ -100,7 +130,7 @@ function GameList() {
                 onClose={handleCloseGameInsert} 
                 open={openGameInsert} 
                 fullWidth={true} 
-                maxWidth={'lg'}
+                maxWidth={'sm'}
             >
                 <DialogActions>
                     <IconButton 
@@ -108,7 +138,7 @@ function GameList() {
                         onClick={handleCloseGameInsert} 
                         className={classes.closeDialogButton}
                     >
-                        <CloseIcon/>
+                        <Close />
                     </IconButton>
                 </DialogActions>
                 <GameInsert 
@@ -146,14 +176,21 @@ function GameList() {
                             label: 'Date',
                             name: 'date',
                             options: {
-                                customBodyRender: (value) => {
-                                    return format(new Date(value), 'MMM d')
+                                customBodyRender: (value, tableMeta) => {
+                                    const timeStamp = value + 'T' + tableMeta.rowData[5];
+                                    return format(new Date(timeStamp), 'MMM d');
                                 }
                             }
                         },
                         {
                             label: 'Time (CST)',
                             name: 'time',
+                            options: {
+                                customBodyRender: (value, tableMeta) => {
+                                    const timeStamp = tableMeta.rowData[4] + 'T' + value;
+                                    return format(new Date(timeStamp), 'h:mm a');
+                                }
+                            }
                         },
                     ]}
                     title={(
@@ -167,7 +204,7 @@ function GameList() {
                                     Add Game
                                 </Button>
                             </div>
-                            <FormControl className={classes.yearSelector}>
+                            <FormControl className={classes.timeSelector}>
                                 <InputLabel htmlFor="year-id">League Year</InputLabel>
                                 <Select
                                     value={leagueYear}
@@ -184,7 +221,7 @@ function GameList() {
                                     )}
                                 </Select>
                             </FormControl>
-                            <FormControl className={classes.weekSelector}>
+                            <FormControl className={classes.timeSelector}>
                                 <InputLabel htmlFor="week-id">Week</InputLabel>
                                 <Select
                                     value={leagueWeek}
@@ -220,34 +257,3 @@ function GameList() {
 }
 
 export default GameList;
-
-const useStyles = makeStyles({
-    tableContent: {
-        padding: '10px',
-    },
-    closeDialogButton: {
-        position: 'absolute',
-        left: '95%',
-        top: '2%',
-        backgroundColor: 'lightgray',
-        color: 'gray',
-    },
-    button: {
-        textTransform: 'none',
-    },
-    selectors: {
-        display: 'flex',
-    },
-    addGameButton: {
-        paddingRight: '10px',
-    },
-    yearSelector: {
-        display: 'flex',
-        width: '25%',
-        paddingRight: '10px',
-    },
-    weekSelector: {
-        display: 'flex',
-        width: '20%',
-    },
-});
