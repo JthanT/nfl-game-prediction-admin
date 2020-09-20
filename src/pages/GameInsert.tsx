@@ -155,6 +155,7 @@ function GameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) 
                             <TextField
                                 type="time"
                                 onChange={(fieldValue) => setGameTime(fieldValue.target.value)}
+                                defaultValue={currentLeagueTimes.usualGameTime}
                                 inputProps={{
                                     step: 300,
                                 }}
