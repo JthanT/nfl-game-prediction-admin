@@ -6,20 +6,23 @@ import {
     DialogTitle, 
     Typography, 
     Button,
-    FormControl,
     Select,
     MenuItem
 } from '@material-ui/core';
 import { numberOfTeams, severitySelections } from '../utils/stats';
+import { timeSelections } from '../utils/time';
 import { TEAM_DETAILS_BY_ID_QUERY } from '../graphql/queries/team.queries';
 import { TEAM_DETAILS_UPDATE_BY_ID } from '../graphql/mutations/team.mutations';
 
 const useStyles = makeStyles({
-    inputRow: {
+    rankSelectionRow: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
         paddingTop: '20px',
+    },
+    otherSelectionRow: {
+        display: 'flex',
+        flexDirection: 'row',
         paddingBottom: '30px'
     },
     updateButton: {
@@ -34,6 +37,7 @@ const useStyles = makeStyles({
     },
     selectors: {
         display: 'flex',
+        flexDirection: 'column',
     },
     selector: {
         width: '70px'
@@ -65,8 +69,10 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
     const [defenceRank, setDefenceRank] = useState<number>();
     const [specialTeamsRank, setSpecialTeamsRank] = useState<number>();
     const [injurySeverity, setInjurySeverity] = useState<number>();
+    const [byeWeek, setByeWeek] = useState<number>();
 
     const handleUpdate = () => {
+        
         updateTeamDetails(
             {
                 variables: {
@@ -81,6 +87,7 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                     special_teams_ranking: (!specialTeamsRank || specialTeamsRank === 0) ? 
                         data?.team_details[0].special_teams_ranking :
                         specialTeamsRank,
+                    bye_week: byeWeek ?? data?.team_details[0].bye_week, 
                 }
             }
         )
@@ -96,9 +103,9 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                 Edit Team Data: {data?.team_details[0].name}
             </DialogTitle>
             <DialogContent dividers>
-                <div className={classes.inputRow}>    
+                <div className={classes.rankSelectionRow}>    
                     <div className={classes.selectionBlocks}>
-                        <FormControl className={classes.selectors}>
+                        <div className={classes.selectors}>
                             <Typography>
                                 Offence Rank
                             </Typography>
@@ -112,10 +119,10 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                                     })
                                 }
                             </Select>
-                        </FormControl>
+                        </div>
                     </div>
                     <div className={classes.selectionBlocks}>
-                        <FormControl className={classes.selectors}>
+                        <div className={classes.selectors}>
                             <Typography>
                                 Defence Rank
                             </Typography>
@@ -129,10 +136,10 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                                     })
                                 }
                             </Select>
-                        </FormControl>
+                        </div>
                     </div>
                     <div className={classes.selectionBlocks}>
-                        <FormControl className={classes.selectors}>
+                        <div className={classes.selectors}>
                             <Typography>
                                 Special Teams Rank
                             </Typography>
@@ -146,10 +153,12 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                                     })
                                 }
                             </Select>
-                        </FormControl>
+                        </div>
                     </div>
+                </div>
+                <div className={classes.otherSelectionRow}>
                     <div className={classes.selectionBlocks}>
-                        <FormControl className={classes.selectors}>
+                        <div className={classes.selectors}>
                             <Typography>
                                 Injury Severity
                             </Typography>
@@ -163,7 +172,24 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                                     })
                                 }
                             </Select>
-                        </FormControl>
+                        </div>
+                    </div>
+                    <div className={classes.selectionBlocks}>
+                        <div className={classes.selectors}>
+                            <Typography>
+                                Bye Week
+                            </Typography>
+                            <Select
+                                className={classes.selector}
+                                value={byeWeek ?? data?.team_details[0].bye_week ?? ''}
+                                onChange={(fieldValue) => setByeWeek(fieldValue.target.value as number)}
+                            >
+                                {timeSelections.leagueWeeks.map((number) => {
+                                        return <MenuItem value={number}>{number}</MenuItem>
+                                    })
+                                }
+                            </Select>
+                        </div>
                     </div>
                 </div>
                 <div className={classes.buttonRow}>

@@ -85,6 +85,10 @@ function TeamList() {
                             label: 'Team Grade',
                             name: 'grade',
                         },
+                        {
+                            label: 'Bye Week',
+                            name: 'bye_week',
+                        },
                     ]}
                     title=""
                     options={{
