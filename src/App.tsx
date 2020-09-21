@@ -10,8 +10,9 @@ import {
   HttpLink
 } from '@apollo/client';
 import { useAuth0 } from "@auth0/auth0-react";
-import { AppBar, Typography, Button, Toolbar } from '@material-ui/core';
+import { AppBar, Typography, Toolbar } from '@material-ui/core';
 import { ApolloProvider } from "@apollo/react-hooks";
+import LinkButton from './components/LinkButton';
 
 const useStyles = makeStyles({
   root: {
@@ -83,9 +84,10 @@ function App() {
               <Link to={"/admin-game-list"} className={classes.navBarSectionTitles}>
                 Schedule
               </Link>
-              <Button onClick={() => logout()}>
-                Logout
-              </Button>
+              <LinkButton 
+                onClick={logout}
+                label="Logout"
+              />
             </Toolbar>
           </AppBar>
           <Switch>
