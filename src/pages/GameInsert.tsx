@@ -57,7 +57,8 @@ function GameInsert(
         refetchGames?: () => void, 
         closeMenu?: () => void, 
         week?: number
-    }) {
+    }
+) {
 
     const classes = useStyles();
 

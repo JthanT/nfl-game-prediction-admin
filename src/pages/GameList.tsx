@@ -2,9 +2,6 @@ import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import { 
     makeStyles, 
-    Dialog, 
-    DialogActions, 
-    IconButton, 
     Button, 
     Select, 
     MenuItem, 
@@ -12,23 +9,16 @@ import {
     Typography 
 } from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
-import { Close } from '@material-ui/icons';
 import { format } from 'date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import GameInsert from './GameInsert';
 import ModifyGameDetails from './ModifyGameDetails';
 import { GAME_SCHEDULE_BY_YEAR_QUERY } from '../graphql/queries/game.queries';
+import DialogBox from '../components/DialogBox';
 
 const useStyles = makeStyles({
     tableContent: {
         padding: '10px',
-    },
-    closeDialogButton: {
-        position: 'absolute',
-        left: '94%',
-        top: '2%',
-        backgroundColor: 'lightgray',
-        color: 'gray',
     },
     button: {
         textTransform: 'none',
@@ -102,54 +92,34 @@ function GameList() {
 
     return (
         <div>
-            <Dialog 
-                onClose={handleCloseDetails} 
+            <DialogBox
+                handleClose={handleCloseDetails} 
                 open={openDetails} 
-                fullWidth={true} 
-                maxWidth={'sm'}
-            >
-                <DialogActions>
-                    <IconButton 
-                        size="small" 
-                        onClick={handleCloseDetails} 
-                        className={classes.closeDialogButton}
-                    >
-                        <Close />
-                    </IconButton>
-                </DialogActions>
-                <ModifyGameDetails 
-                    gameId={id} 
-                    refetchGameDetails={() => refetch({
-                        leagueYear: leagueYear,
-                        leagueWeek: leagueWeek,
-                    })} 
-                    closeDetailsMenu={handleCloseDetails} 
-                />
-            </Dialog>
-            <Dialog 
-                onClose={handleCloseGameInsert} 
+                components={
+                    <ModifyGameDetails 
+                        gameId={id} 
+                        refetchGameDetails={() => refetch({
+                            leagueYear: leagueYear,
+                            leagueWeek: leagueWeek,
+                        })} 
+                        closeDetailsMenu={handleCloseDetails} 
+                    />
+                }
+            />
+            <DialogBox 
+                handleClose={handleCloseGameInsert} 
                 open={openGameInsert} 
-                fullWidth={true} 
-                maxWidth={'sm'}
-            >
-                <DialogActions>
-                    <IconButton 
-                        size="small" 
-                        onClick={handleCloseGameInsert} 
-                        className={classes.closeDialogButton}
-                    >
-                        <Close />
-                    </IconButton>
-                </DialogActions>
-                <GameInsert 
-                    refetchGames={() => refetch({
-                        leagueYear: leagueYear,
-                        leagueWeek: leagueWeek,
-                    })}
-                    closeMenu={handleCloseGameInsert}
-                    week={leagueWeek}
-                />
-            </Dialog>
+                components={
+                    <GameInsert 
+                        refetchGames={() => refetch({
+                            leagueYear: leagueYear,
+                            leagueWeek: leagueWeek,
+                        })}
+                        closeMenu={handleCloseGameInsert}
+                        week={leagueWeek}
+                    />
+                }
+            />
             <div className={classes.tableContent}>
                 <MUIDataTable
                     data={data ? data.game_schedule : []}

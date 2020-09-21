@@ -1,24 +1,14 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import MUIDataTable from "mui-datatables";
-import { IconButton, DialogActions, Dialog, makeStyles } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core';
 import TeamDetails from './TeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
+import DialogBox from '../components/DialogBox';
 
 const useStyles = makeStyles({
     tableContent: {
         padding: '10px',
-    },
-    closeDialogButton: {
-        position: 'absolute',
-        left: '94%',
-        top: '2%',
-        backgroundColor: 'lightgray',
-        color: 'gray',
-    },
-    teamSelectors: {
-        display: 'flex',
     },
 });
 
@@ -42,14 +32,13 @@ function TeamList() {
 
     return (
         <div>
-            <Dialog onClose={handleClose} open={open} fullWidth={true} maxWidth = {'sm'}>
-                <DialogActions>
-                    <IconButton size="small" onClick={handleClose} className={classes.closeDialogButton}>
-                        <Close />
-                    </IconButton>
-                </DialogActions>
-                <TeamDetails teamId={id} refetchTeamDetails={refetch} />
-            </Dialog>
+            <DialogBox 
+                handleClose={handleClose} 
+                open={open} 
+                components={
+                    <TeamDetails teamId={id} refetchTeamDetails={refetch} />
+                }
+            />
             <div className={classes.tableContent}>
                 <MUIDataTable
                     data={data ? data.team_details : []}
