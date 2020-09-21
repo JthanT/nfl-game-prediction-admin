@@ -18,7 +18,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
-import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
+import { TEAM_DETAILS_BY_BYE_WEEK_QUERY } from '../graphql/queries/team.queries';
 
 const useStyles = makeStyles({
     inputRow: {
@@ -52,11 +52,23 @@ const useStyles = makeStyles({
     }
 });
 
-function GameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) {
+function GameInsert(
+    props: {
+        refetchGames?: () => void, 
+        closeMenu?: () => void, 
+        week?: number
+    }
+) {
 
     const classes = useStyles();
 
-    const { data } = useQuery(TEAM_DETAILS_QUERY);
+    const { data } = useQuery(
+        TEAM_DETAILS_BY_BYE_WEEK_QUERY, {
+            variables: {
+                bye_week: props.week
+            },
+        }
+    );
 
     const [insertGame] = useMutation(GAME_SCHEDULE_INSERT);
 
@@ -64,7 +76,7 @@ function GameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) 
     const [homeTeam, setHomeTeam] = useState<string>();
     const [leagueYear, setLeagueYear] = useState<number>(currentLeagueTimes.currentLeagueYear);
     const [gameTime, setGameTime] = useState<string>(currentLeagueTimes.usualGameTime);
-    const [gameWeek, setGameWeek] = useState<number>(currentLeagueTimes.currentLeagueWeek);
+    const [gameWeek, setGameWeek] = useState<number>(props.week ?? currentLeagueTimes.currentLeagueWeek);
     const [gameDate, setGameDate] = useState<Date>(new Date());
 
     const teamOptions = data?.team_details.map((team) => team.name);
@@ -155,6 +167,7 @@ function GameInsert(props: {refetchGames?: () => void, closeMenu?: () => void}) 
                             <TextField
                                 type="time"
                                 onChange={(fieldValue) => setGameTime(fieldValue.target.value)}
+                                defaultValue={currentLeagueTimes.usualGameTime}
                                 inputProps={{
                                     step: 300,
                                 }}

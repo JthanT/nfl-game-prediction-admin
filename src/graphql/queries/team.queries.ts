@@ -8,7 +8,16 @@ export const TEAM_DETAILS_QUERY = gql`
         }
     }
     ${TEAM_DETAILS_FRAGMENT}
-`
+`;
+
+export const TEAM_DETAILS_BY_BYE_WEEK_QUERY = gql`
+    query TeamDetailsQuery($bye_week: Int!) {
+        team_details(where: {bye_week: {_neq: $bye_week}}, order_by: {name: asc}){
+            ...team_details
+        }
+    }
+    ${TEAM_DETAILS_FRAGMENT}
+`;
 
 export const TEAM_DETAILS_BY_ID_QUERY = gql`
     query TeamDetailsByNameQuery($id: Int!) {
@@ -17,4 +26,4 @@ export const TEAM_DETAILS_BY_ID_QUERY = gql`
         }
     }
     ${TEAM_DETAILS_FRAGMENT}
-`
+`;
