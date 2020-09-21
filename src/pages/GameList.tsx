@@ -147,6 +147,7 @@ function GameList() {
                         leagueWeek: leagueWeek,
                     })}
                     closeMenu={handleCloseGameInsert}
+                    week={leagueWeek}
                 />
             </Dialog>
             <div className={classes.tableContent}>
