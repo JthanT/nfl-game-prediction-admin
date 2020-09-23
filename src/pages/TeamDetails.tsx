@@ -184,7 +184,7 @@ function TeamDetails(props: {teamId: number, refetchTeamDetails?: () => void}) {
                                 value={byeWeek ?? data?.team_details[0].bye_week ?? ''}
                                 onChange={(fieldValue) => setByeWeek(fieldValue.target.value as number)}
                             >
-                                {timeSelections.leagueWeeks.map((number) => {
+                                {timeSelections.byeWeeks.map((number) => {
                                         return <MenuItem value={number}>{number}</MenuItem>
                                     })
                                 }
