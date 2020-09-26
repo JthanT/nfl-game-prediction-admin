@@ -16,8 +16,8 @@ import LinkButton from './components/LinkButton';
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: 1,
-    backgroundColor: '#dae4f2',
+    height: '100%',
+    backgroundColor: '#deebff',
   },
   navBarTitle: {
     flexGrow: 1,
