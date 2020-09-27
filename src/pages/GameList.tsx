@@ -192,7 +192,7 @@ function GameList() {
                                     >
                                         {(
                                             timeSelections.leagueYears.map((year) => {
-                                                return <MenuItem value={year}>{year}</MenuItem>
+                                                return <MenuItem key={year} value={year}>{year}</MenuItem>
                                             })
                                         )}
                                     </Select>
@@ -208,7 +208,7 @@ function GameList() {
                                     >
                                         {(
                                             timeSelections.leagueWeeks.map((week) => {
-                                                return <MenuItem value={week}>{week}</MenuItem>
+                                                return <MenuItem key={week} value={week}>{week}</MenuItem>
                                             })
                                         )}
                                     </Select>

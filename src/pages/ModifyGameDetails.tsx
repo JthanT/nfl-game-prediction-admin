@@ -9,8 +9,7 @@ import {
     Dialog, 
     makeStyles, 
     MenuItem, 
-    TextField, 
-    FormControl 
+    TextField
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -92,6 +91,18 @@ function ModifyGameDetails(
     const [openDeletionConfirmation, setOpenDeletionConfirmation] = useState<boolean>(false);
 
     const teamOptions = teamData?.data?.team_details.map((team) => team.name);
+
+    const winnerOptions = gameData?.data ? (
+            ['Tie'].concat(
+                teamOptions
+                    .filter((name) => (
+                        name === gameData?.data?.game_schedule[0].team_1_name ||
+                        name === gameData?.data?.game_schedule[0].team_2_name)
+                    )
+            )
+        ) : (
+            []
+        );
    
     const handleGameUpdate = () => {
         updateGameDetails({
@@ -187,7 +198,7 @@ function ModifyGameDetails(
                 <div className={classes.content}>
                     <div className={classes.inputRow}>
                         <div className={classes.selectionBlocks}>
-                            <FormControl className={classes.selectors}>
+                            <div className={classes.selectors}>
                                 <Typography>Away Team</Typography>
                                 <Select
                                     className={classes.teamSelectors}
@@ -196,14 +207,14 @@ function ModifyGameDetails(
                                 >
                                     {teamData?.data && (
                                         teamOptions.map((name) => {
-                                            return <MenuItem value={name}>{name}</MenuItem>
+                                            return <MenuItem key={name} value={name}>{name}</MenuItem>
                                         })
                                     )}
                                 </Select>
-                            </FormControl>
+                            </div>
                         </div>
                         <div className={classes.selectionBlocks}>
-                            <FormControl className={classes.selectors}>
+                            <div className={classes.selectors}>
                                 <Typography>Home Team</Typography>
                                 <Select
                                     className={classes.teamSelectors}
@@ -212,11 +223,11 @@ function ModifyGameDetails(
                                 >
                                     {teamData?.data && (
                                         teamOptions.map((name) => {
-                                            return <MenuItem value={name}>{name}</MenuItem>
+                                            return <MenuItem key={name} value={name}>{name}</MenuItem>
                                         })
                                     )}
                                 </Select>
-                            </FormControl>
+                            </div>
                         </div>
                     </div>
                     <div className={classes.inputRow}>
@@ -257,7 +268,7 @@ function ModifyGameDetails(
                                 >
                                     {
                                         timeSelections.leagueWeeks.map((week) => {
-                                            return <MenuItem value={week}>{week}</MenuItem>
+                                            return <MenuItem key={week} value={week}>{week}</MenuItem>
                                         })
                                     }
                                 </Select>
@@ -272,7 +283,7 @@ function ModifyGameDetails(
                                 >
                                     {
                                         timeSelections.leagueYears.map((year) => {
-                                            return <MenuItem value={year}>{year}</MenuItem>
+                                            return <MenuItem key={year} value={year}>{year}</MenuItem>
                                         })
                                     }
                                 </Select>
@@ -281,25 +292,20 @@ function ModifyGameDetails(
                     </div>
                     <div>
                         <div className={classes.selectionBlocks}>
-                            <FormControl className={classes.selectors}>
+                            <div className={classes.selectors}>
                                 <Typography>Winning Team</Typography>
                                 <Select
                                     className={classes.teamSelectors}
                                     value={winningTeam ?? gameData?.data?.game_schedule[0].winning_team ?? ''}
                                     onChange={(fieldValue) => setWinningTeam(fieldValue.target.value as string)}
                                 >
-                                    {teamData?.data && (
-                                        teamOptions
-                                            .filter((name) => (
-                                                name === gameData?.data?.game_schedule[0].team_1_name ||
-                                                name === gameData?.data?.game_schedule[0].team_2_name )
-                                            )
-                                            .map((name) => {
-                                                return <MenuItem value={name}>{name}</MenuItem>
-                                            })
-                                    )}
+                                    {winnerOptions
+                                        .map((name) => {
+                                            return <MenuItem key={name} value={name}>{name}</MenuItem>
+                                        })
+                                    }
                                 </Select>
-                            </FormControl>
+                            </div>
                         </div>
                     </div>
                 </div>
