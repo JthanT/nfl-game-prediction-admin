@@ -16,6 +16,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { format } from 'date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import { GAME_SCHEDULE_INSERT } from '../graphql/mutations/game.mutations';
 import { TEAM_DETAILS_BY_BYE_WEEK_QUERY } from '../graphql/queries/team.queries';
@@ -79,6 +80,8 @@ function GameInsert(
     const [gameWeek, setGameWeek] = useState<number>(props.week ?? currentLeagueTimes.currentLeagueWeek);
     const [gameDate, setGameDate] = useState<Date>(new Date());
 
+    
+
     const teamOptions = data?.team_details.map((team) => team.name);
 
     const handleGameInsert = () => {
@@ -90,10 +93,10 @@ function GameInsert(
                     league_year: leagueYear, 
                     time: gameTime + ':00', 
                     week: gameWeek , 
-                    date: gameDate
+                    date: format(gameDate, 'yyyy-MM-dd')
                 }
             }
-        )
+        );
 
         if (props.refetchGames) {
             props.refetchGames()
