@@ -43,7 +43,7 @@ function App() {
   const classes = useStyles();
 
   const httpLink = new HttpLink({
-    uri: "https://nfl-game-prediction.herokuapp.com/v1/graphql",
+    uri: process.env.REACT_APP_API_URL,
     headers: {
       'Authorization': `Bearer ${token}`
     }
