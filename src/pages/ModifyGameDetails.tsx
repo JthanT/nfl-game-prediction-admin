@@ -92,7 +92,7 @@ function ModifyGameDetails(
 
     const teamOptions = teamData?.data?.team_details.map((team) => team.name);
 
-    const winnerOptions = gameData?.data ? (
+    const winnerOptions = teamData?.data ? (
             ['Tie'].concat(
                 teamOptions
                     .filter((name) => (
