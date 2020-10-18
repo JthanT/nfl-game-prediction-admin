@@ -1,6 +1,6 @@
 export const currentLeagueTimes = {
     currentLeagueYear: 2020,
-    currentLeagueWeek: 5,
+    currentLeagueWeek: 6,
     usualGameTime: "11:00", // CST
 };
 
