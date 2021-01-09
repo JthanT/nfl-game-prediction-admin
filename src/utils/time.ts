@@ -1,7 +1,7 @@
 export const currentLeagueTimes = {
     currentLeagueYear: 2020,
-    currentLeagueWeek: 5,
-    usualGameTime: "11:00", // CST
+    currentLeagueWeek: 17,
+    usualGameTime: "12:00", // CST
 };
 
 export const timeSelections = {
