@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import { AUTH_CONFIG } from './auth/auth-config';
 import TeamList from './pages/TeamList';
 import GameList from './pages/GameList';
@@ -10,33 +10,19 @@ import {
   HttpLink
 } from '@apollo/client';
 import { useAuth0 } from "@auth0/auth0-react";
-import { AppBar, Typography, Toolbar } from '@material-ui/core';
 import { ApolloProvider } from "@apollo/react-hooks";
-import LinkButton from './components/LinkButton';
+import NavBar from './components/NavBar';
 
 const useStyles = makeStyles({
   root: {
     height: '100%',
     backgroundColor: '#deebff',
   },
-  navBarTitle: {
-    paddingRight: '100px',
-  },
-  linksRow: {
-    paddingRight: '50px',
-  },
-  links: {
-    textDecoration: 'none',
-    color: "white",
-  },
-  navBar: {
-    backgroundColor: '#1a468a',
-  }
 });
 
 function App() {
 
-  const { logout, loginWithRedirect, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  const { loginWithRedirect, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
   
   const token = localStorage.getItem('id_token');
 
@@ -75,31 +61,7 @@ function App() {
     <ApolloProvider client={client}>
       <div className={classes.root}>
         <Router>
-          <AppBar position="static" className={classes.navBar}>
-            <Toolbar>
-              <div className={classes.navBarTitle}>
-                <Typography variant="h6">
-                  NFL Game Predictor
-                </Typography>
-              </div>
-              <div className={classes.linksRow}>
-                <Link to={"/"} className={classes.links}>
-                Team List
-                </Link>
-              </div>
-              <div className={classes.linksRow}>
-                <Link to={"/admin-game-list"} className={classes.links}>
-                  Schedule
-                </Link>
-              </div>
-              <div className={classes.linksRow}>
-                <LinkButton 
-                  onClick={logout}
-                  label="Logout"
-                />
-              </div>
-            </Toolbar>
-          </AppBar>
+          <NavBar />
           <Switch>
             <Route exact path='/' component={TeamList} />
             <Route path='/admin-game-list' component={GameList} />
