@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     color: "white",
   },
   navBar: {
-    backgroundColor: '#2d2d2d',
+    backgroundColor: '#292929',
   }
 });
 

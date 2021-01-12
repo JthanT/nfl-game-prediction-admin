@@ -16,7 +16,7 @@ import NavBar from './components/NavBar';
 const useStyles = makeStyles({
   root: {
     height: '100%',
-    backgroundColor: '#deebff',
+    backgroundColor: '#131313',
   },
 });
 

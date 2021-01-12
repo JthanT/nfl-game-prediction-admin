@@ -1,22 +1,11 @@
-import { 
-    makeStyles,
-} from '@material-ui/core';
 import MUIDataTable from "mui-datatables";
-
-const useStyles = makeStyles({
-    button: {
-        textTransform: 'none',
-    },
-});
 
 function DataTable(props: {
     data: Array<any>,
     columns: Array<any>,
-    title: JSX.Element,
+    title?: JSX.Element,
     options: object,
 }) {
-        
-    const classes = useStyles();
 
     return (
         <MUIDataTable
