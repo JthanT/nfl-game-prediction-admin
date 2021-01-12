@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import MUIDataTable from "mui-datatables";
 import { makeStyles } from '@material-ui/core';
 import TeamDetails from './TeamDetails';
 import { TEAM_DETAILS_QUERY } from '../graphql/queries/team.queries';
 import DialogBox from '../components/DialogBox';
 import PageLoading from '../components/PageLoading';
+import DataTable from '../components/DataTable';
 
 const useStyles = makeStyles({
     tableContent: {
@@ -42,7 +42,7 @@ function TeamList() {
             />
             <div className={classes.tableContent}>
                 {!loading ? (
-                    <MUIDataTable
+                    <DataTable
                         data={data?.team_details ?? []}
                         columns={[
                             {
@@ -81,15 +81,7 @@ function TeamList() {
                                 name: 'bye_week',
                             },
                         ]}
-                        title=""
                         options={{
-                            print: false,
-                            download: false,
-                            viewColumns: false,
-                            selectableRows: 'none',
-                            filter: false,
-                            rowsPerPage: 16,
-                            rowsPerPageOptions: [],
                             onRowClick: (rowData) => handleOpen(parseInt(rowData[0])),
                         }}
                     />

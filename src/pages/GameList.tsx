@@ -8,7 +8,6 @@ import {
     FormControl, 
     Typography, 
 } from '@material-ui/core';
-import MUIDataTable from "mui-datatables";
 import { format } from 'date-fns';
 import { timeSelections, currentLeagueTimes } from '../utils/time';
 import GameInsert from './GameInsert';
@@ -18,6 +17,7 @@ import DialogBox from '../components/DialogBox';
 import PageLoading from '../components/PageLoading';
 import RightPredictionIcon from '../components/icons/RightPredictionIcon';
 import WrongPredictionIcon from '../components/icons/WrongPredictionIcon';
+import DataTable from '../components/DataTable';
 
 const useStyles = makeStyles({
     rightRoot: {
@@ -150,7 +150,7 @@ function GameList() {
             />
             <div className={classes.tableContent}>
                 {!loading ? (
-                    <MUIDataTable
+                    <DataTable
                         data={data?.game_schedule ?? []}
                         columns={[
                             {
@@ -257,13 +257,6 @@ function GameList() {
                             </div>
                         )}
                         options={{
-                            print: false,
-                            download: false,
-                            viewColumns: false,
-                            selectableRows: 'none',
-                            filter: false,
-                            rowsPerPage: 16,
-                            rowsPerPageOptions: [],
                             onRowClick: (rowName) => handleOpenDetails(parseInt(rowName[0])),
                         }}
                     />
